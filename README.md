@@ -10,3 +10,7 @@ Following this - we adapted from the following two repos:
 - https://github.com/aws-samples/aws-amplify-quick-notes for most the note functionality
 
 As we just want to prioritise working on our business requirements - the bedrock integration!
+
+## Requirements
+Generate a GitHub PAT stored into AWS Secrets Manager of the target account named `george-github-token` and with the key
+`github_token`. This PAT needs public repository pull access only.
