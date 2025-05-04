@@ -1,16 +1,23 @@
 import * as cdk from 'aws-cdk-lib';
 // import * as codecommit from 'aws-cdk-lib/aws-codecommit';
-import { Construct } from 'constructs';
+import {Construct} from 'constructs';
 import * as amplify from '@aws-cdk/aws-amplify-alpha';
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 export class AmplifyInfraStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
+        const serviceRole = new iam.Role(this, 'Role', {
+            assumedBy: new iam.ServicePrincipal('amplify.amazonaws.com')
+        });
+        serviceRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AmplifyBackendDeployFullAccess'));
+
         const todoRepo = new amplify.App(
             this,
             'AmplifyTodoTestApp',
             {
+                role: serviceRole,
                 sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
                     owner: 'wilsonge',
                     repository: 'todo-app-challenge',

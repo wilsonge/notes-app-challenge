@@ -13,4 +13,8 @@ As we just want to prioritise working on our business requirements - the bedrock
 
 ## Requirements
 Generate a GitHub PAT stored into AWS Secrets Manager of the target account named `george-github-token` and with the key
-`github_token`. This PAT needs public repository pull access only.
+`github_token`. This PAT needs public repository pull access and the ability to read and write webhooks to the repo.
+
+## Deployment
+Install npm dependencies with `npm ci`. Navigate into the `amplify-infra` subdirectory of this repository and run cdk-deploy
+whilst authenticated to AWS.
