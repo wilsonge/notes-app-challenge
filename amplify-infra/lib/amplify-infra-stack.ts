@@ -12,6 +12,7 @@ export class AmplifyInfraStack extends cdk.Stack {
             assumedBy: new iam.ServicePrincipal('amplify.amazonaws.com')
         });
         serviceRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AmplifyBackendDeployFullAccess'));
+        serviceRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess-Amplify'));
 
         const todoRepo = new amplify.App(
             this,
@@ -20,7 +21,7 @@ export class AmplifyInfraStack extends cdk.Stack {
                 role: serviceRole,
                 sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
                     owner: 'wilsonge',
-                    repository: 'todo-app-challenge',
+                    repository: 'testing-amplify',
                     oauthToken: cdk.SecretValue.secretsManager('george-github-token', {
                         jsonField: 'github_token',
                     }),
