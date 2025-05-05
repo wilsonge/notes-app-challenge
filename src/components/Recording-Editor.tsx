@@ -21,7 +21,7 @@ const StyledInput = styled(Input)`
   background-color: #f4f9f4;
 `;
 
-const StyledTextarea = styled("textarea")`
+const StyledTextarea = styled.textarea`
   color: #74b49b;
   background-color: #f4f9f4;
   width: 100%;
@@ -30,7 +30,7 @@ const StyledTextarea = styled("textarea")`
   resize: vertical;
 `;
 
-const FormInputs = styled("div")`
+const FormInputs = styled.div`
   max-height: 450px;
   overflow: scroll;
   padding: 16px;
@@ -44,18 +44,18 @@ const FormInputs = styled("div")`
   }
 `;
 
-const Actions = styled("div")`
+const Actions = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
   margin-top: 24px;
 `;
 
-const InputContainer = styled("div")`
+const InputContainer = styled.div`
   margin-bottom: 16px;
 `;
 
-const Title = styled("h2")`
+const Title = styled.h2`
   color: #74b49b;
 `;
 

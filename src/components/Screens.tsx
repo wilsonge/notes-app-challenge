@@ -1,10 +1,10 @@
-import { useState } from "react";
 import styled from "@emotion/styled";
-import { Tabs, Button } from '@aws-amplify/ui-react';
+import { Button } from '@aws-amplify/ui-react';
 import { signOut } from 'aws-amplify/auth';
+import { TabProvider, TabList, Tab, TabPanel, useTabStore } from "@ariakit/react";
 
 import Notes from "./Notes";
-import Record from "./Record";
+// import Record from "./Record";
 
 const Header = styled("div")`
   background-color: #ffffff;
@@ -33,13 +33,6 @@ const SignOutButton = styled(Button)`
   cursor: pointer;
 `;
 
-const StyledTabs = styled(Tabs)`
-  padding-top: 80px;
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 80px);
-`;
-
 const StyledTabList = styled(TabList)`
   display: flex;
   justify-content: stretch;
@@ -57,7 +50,7 @@ const StyledTabList = styled(TabList)`
   }
 `;
 
-const StyledTabPanels = styled(TabPanels)`
+const StyledTabPanels = styled.div`
   padding-top: 50px;
   flex: 1;
 
@@ -85,7 +78,8 @@ const StyledTab = styled(Tab)`
 `;
 
 const Screens = () => {
-    const [tabIndex, setTabIndex] = useState(0);
+    const tab = useTabStore();
+    const defaultSelectedId = "default-selected-tab";
 
     async function handleSignOut() {
         await signOut()
@@ -95,24 +89,25 @@ const Screens = () => {
         <>
             <Header>
                 <Title>Quick Notes</Title>
-                <SignOutButton onClick={handleSignOut}>
+                <SignOutButton
+                    onClick={handleSignOut}>
                     Sign Out
                 </SignOutButton>
             </Header>
-            <StyledTabs index={tabIndex} onChange={index => setTabIndex(index)}>
-                <StyledTabList>
-                    <StyledTab>Notes</StyledTab>
+            <TabProvider defaultSelectedId={defaultSelectedId}>
+                <StyledTabList store={tab}>
+                    <StyledTab id={defaultSelectedId}>Notes</StyledTab>
                     <StyledTab>Record</StyledTab>
                 </StyledTabList>
                 <StyledTabPanels>
                     <StyledTabPanel>
-                        {tabIndex === 0 && <Notes setTabIndex={setTabIndex} />}
+                        <Notes setTabIndex={setTabIndex} />
                     </StyledTabPanel>
                     <StyledTabPanel>
-                        {tabIndex === 1 && <Record setTabIndex={setTabIndex} />}
+                        {/* <Record setTabIndex={setTabIndex} /> */}
                     </StyledTabPanel>
                 </StyledTabPanels>
-            </StyledTabs>
+            </TabProvider>
         </>
     );
 };
