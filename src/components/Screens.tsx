@@ -7,17 +7,9 @@ import Notes from "./Notes";
 import Record from "./Record";
 
 const Header = styled("div")`
-  background-color: #ffffff;
-  padding-left: 16px;
-  padding-right: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
-  right: 0;
-  left: 0;
-  height: 80px;
-  z-index: 2;
 `;
 
 const Title = styled("h1")`
@@ -25,7 +17,6 @@ const Title = styled("h1")`
   margin-bottom: 0;
   text-transform: uppercase;
   color: #74b49b;
-  font-size: 24px;
 `;
 
 const SignOutButton = styled(Button)`
@@ -56,10 +47,10 @@ const Screens = () => {
                     <Tab>Record</Tab>
                 </TabList>
                 <div className="panels">
-                    <TabPanel tabId={defaultSelectedId}>
+                    <TabPanel store={tab} tabId={defaultSelectedId}>
                         <Notes />
                     </TabPanel>
-                    <TabPanel>
+                    <TabPanel store={tab}>
                         <Record />
                     </TabPanel>
                 </div>
