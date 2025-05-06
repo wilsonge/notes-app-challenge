@@ -100,7 +100,7 @@ const Screens = () => {
                     <StyledTab>Record</StyledTab>
                 </StyledTabList>
                 <StyledTabPanels>
-                    <StyledTabPanel>
+                    <StyledTabPanel tabId={defaultSelectedId}>
                         <Notes />
                     </StyledTabPanel>
                     <StyledTabPanel>
