@@ -1,5 +1,5 @@
 import { useState } from "react";
-// import { Predictions } from "aws-amplify";
+import { Predictions } from '@aws-amplify/predictions';
 import { keyframes, css } from "@emotion/core";
 import styled from "@emotion/styled";
 import {
@@ -39,8 +39,7 @@ const pulse = keyframes`
 const RecordComponent = () => {
     const [isRecording, setIsRecording] = useState(false);
     const [showRecordingEditor, setShowRecordingEditor] = useState(false);
-    // TODO: This can be unignored once we put back in predictions.
-    // const [recordingText, setRecordingText] = useState("");
+    const [recordingText, setRecordingText] = useState("");
     const [isConverting, setIsConverting] = useState(false);
     const [micStream, setMicStream] = useState<MicrophoneStream|null>();
     const [audioBuffer] = useState(
@@ -51,7 +50,7 @@ const RecordComponent = () => {
                 return buffer;
             }
             function newBuffer() {
-                console.log("reseting buffer");
+                console.log("resetting buffer");
                 buffer = [];
             }
 
@@ -74,7 +73,7 @@ const RecordComponent = () => {
             video: false,
             audio: true
         });
-        const startMic = new mic();
+        const startMic = new MicrophoneStream();
 
         startMic.setStream(stream);
         startMic.on('data', (chunk: Buffer) => {
@@ -96,20 +95,19 @@ const RecordComponent = () => {
         setIsRecording(false);
         setIsConverting(true);
 
-        // TODO: New predictions API required
         // @ts-ignore
-        const buffer = audioBuffer.getData();
-        // const result = await Predictions.convert({
-        //     transcription: {
-        //         source: {
-        //             bytes: buffer
-        //         }
-        //     }
-        // });
+        const buffer: Buffer = audioBuffer.getData();
+        const result = await Predictions.convert({
+            transcription: {
+                source: {
+                    bytes: buffer
+                }
+            }
+        });
 
         setMicStream(null);
         audioBuffer.reset();
-        // setRecordingText(result.transcription.fullText);
+        setRecordingText(result.transcription.fullText);
         setIsConverting(false);
         setShowRecordingEditor(true);
     };
@@ -184,7 +182,7 @@ const RecordComponent = () => {
             </div>
             {showRecordingEditor && (
                 <RecordingEditor
-                    text={'' /*recordingText */}
+                    text={recordingText}
                     onDismiss={() => {
                         setShowRecordingEditor(false);
                     }}

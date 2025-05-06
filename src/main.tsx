@@ -8,6 +8,12 @@ import outputs from "../amplify_outputs.json";
 
 Amplify.configure(outputs);
 
+import * as process from 'process';
+window.process = process;
+
+import { Buffer } from 'buffer';
+window.Buffer = Buffer;
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <Authenticator>
