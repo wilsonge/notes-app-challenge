@@ -1,4 +1,4 @@
-import { PolicyStatement } from "aws-cdk-lib/aws-iam";
+import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { defineBackend } from '@aws-amplify/backend';
 import { auth } from './auth/resource';
 import { data } from './data/resource';
@@ -10,6 +10,7 @@ const backend = defineBackend({
 
 backend.auth.resources.unauthenticatedUserIamRole.addToPrincipalPolicy(
     new PolicyStatement({
+        effect: Effect.ALLOW,
         actions: [
             "polly:SynthesizeSpeech",
             "transcribe:StartStreamTranscriptionWebSocket",
