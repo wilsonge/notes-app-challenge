@@ -7,22 +7,25 @@ interface DialogComponentProps extends PropsWithChildren<{}> {
 
 const DialogComponent = (props: DialogComponentProps) => {
     const [open, setOpen] = useState(false);
-    <Dialog
-        open={open}
-        onClose={() => {
-            props.onDismiss();
-            return setOpen(false)
-        }}
-        className="dialog"
-    >
-        <DialogHeading className="heading">
-            Success
-        </DialogHeading>
-        {props.children}
-        <div>
-            <DialogDismiss className="button">OK</DialogDismiss>
-        </div>
-    </Dialog>
+
+    return (
+        <Dialog
+            open={open}
+            onClose={() => {
+                props.onDismiss();
+                return setOpen(false)
+            }}
+            className="dialog"
+        >
+            <DialogHeading className="heading">
+                Success
+            </DialogHeading>
+            {props.children}
+            <div>
+                <DialogDismiss className="button">OK</DialogDismiss>
+            </div>
+        </Dialog>
+    )
 };
 
 export default DialogComponent;

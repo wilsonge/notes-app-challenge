@@ -30,11 +30,11 @@ const NotesComponent = () => {
     return (
         <Container>
             {notes.map(note => (
-                // @ts-ignore
                 <Note
-                    key={note.id}
+                    key={note.id == null ? "" : note.id}
                     {...note}
-                    onSaveChanges={async (values: Schema["Note"]["type"] | undefined) => {
+                    // @ts-ignore
+                    onSaveChanges={async (values: Schema["Note"]["type"]) => {
                         if (values == null) {return}
                         // @ts-ignore
                         const { data: updatedNote, errors } =  await client.models.Note.update(values);
@@ -56,7 +56,9 @@ const NotesComponent = () => {
                         await client.models.Note.delete({id: note.id})
 
                         setNotes(notes.filter(n => n.id !== note.id));
-                    }}></Note>
+                    }}>
+
+                </Note>
             ))}
         </Container>
     );

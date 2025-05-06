@@ -68,7 +68,6 @@ type RecordingEditorProps = {
 }
 
 const RecordingEditor = (props: RecordingEditorProps) => (
-    // @ts-ignore
     <Dialog onDismiss={props.onDismiss}>
         <Title>{props.title ? "Edit Note" : "Create Note"}</Title>
         <Formik

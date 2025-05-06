@@ -40,8 +40,7 @@ const RecordComponent = () => {
     const [isRecording, setIsRecording] = useState(false);
     const [showRecordingEditor, setShowRecordingEditor] = useState(false);
     // TODO: This can be unignored once we put back in predictions.
-    // @ts-ignore
-    const [recordingText, setRecordingText] = useState("");
+    // const [recordingText, setRecordingText] = useState("");
     const [isConverting, setIsConverting] = useState(false);
     const [micStream, setMicStream] = useState<MicrophoneStream|null>();
     const [audioBuffer] = useState(
@@ -185,7 +184,7 @@ const RecordComponent = () => {
             </div>
             {showRecordingEditor && (
                 <RecordingEditor
-                    text={recordingText}
+                    text={'' /*recordingText */}
                     onDismiss={() => {
                         setShowRecordingEditor(false);
                     }}

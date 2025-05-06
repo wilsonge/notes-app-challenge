@@ -65,8 +65,12 @@ const Info = styled.div`
 
 
 type NoteComponentProps = {
-    title: string | undefined;
-    text: string | undefined;
+    key?: string | undefined;
+    id?: string | undefined;
+    title?: string | undefined;
+    text?: string | undefined;
+    created_at?: string | undefined;
+    updated_at?: string | undefined;
     onDelete: MouseEventHandler<SVGElement> | undefined;
     onSaveChanges: (values: Schema["Note"]["type"] | undefined) => Promise<void>;
 }
