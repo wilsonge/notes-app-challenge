@@ -4,7 +4,6 @@ import { Button, Input, Label } from '@aws-amplify/ui-react';
 import { Formik } from "formik";
 
 import Dialog from "./Dialog";
-import type {Schema} from "../../amplify/data/resource.ts";
 
 const StyledButton = styled(Button)`
   background-color: #74b49b;
@@ -60,11 +59,16 @@ const Title = styled.h2`
   color: #74b49b;
 `;
 
+type NoteEditableData = {
+    title: string;
+    text: string;
+}
+
 type RecordingEditorProps = {
     onDismiss: () => void;
     title?: any;
     text: any;
-    onSave: (values: Schema["Note"]["type"]) => Promise<void>;
+    onSave: (values: NoteEditableData) => Promise<void>;
 }
 
 const RecordingEditor = (props: RecordingEditorProps) => (

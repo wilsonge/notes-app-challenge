@@ -4,7 +4,17 @@ import { FaRegEdit, FaPlay, FaRegTrashAlt } from "react-icons/fa";
 // import { Predictions } from "aws-amplify";
 
 import RecordingEditor from "./Recording-Editor";
-import type { Schema } from "../../amplify/data/resource.ts";
+
+type NoteEditableData = {
+    title: string;
+    text: string;
+}
+
+interface Note extends NoteEditableData {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+}
 
 const Note = styled("div")`
   background-color: #ffffff;
@@ -64,15 +74,10 @@ const Info = styled.div`
 `;
 
 
-type NoteComponentProps = {
+interface NoteComponentProps extends Note {
     key?: string | undefined;
-    id?: string | undefined;
-    title?: string | undefined;
-    text?: string | undefined;
-    created_at?: string | undefined;
-    updated_at?: string | undefined;
     onDelete: MouseEventHandler<SVGElement> | undefined;
-    onSaveChanges: (values: Schema["Note"]["type"] | undefined) => Promise<void>;
+    onSaveChanges: (values: NoteEditableData) => Promise<void>;
 }
 
 const NotesComponent = (props: NoteComponentProps) => {
