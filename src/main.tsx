@@ -4,9 +4,15 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import Screens from "./components/Screens.tsx";
 import "./index.css";
 import { Amplify } from "aws-amplify";
+import { parseAmplifyConfig } from "aws-amplify/utils";
 import outputs from "../amplify_outputs.json";
 
-Amplify.configure(outputs);
+const amplifyConfig = parseAmplifyConfig(outputs);
+
+Amplify.configure({
+    ...amplifyConfig,
+    Predictions: outputs.custom.Predictions,
+});
 
 import * as process from 'process';
 window.process = process;
