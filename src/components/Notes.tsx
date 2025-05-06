@@ -34,7 +34,8 @@ const NotesComponent = () => {
                 <Note
                     key={note.id}
                     {...note}
-                    onSaveChanges={async (values: Schema["Note"]["type"]) => {
+                    onSaveChanges={async (values: Schema["Note"]["type"] | undefined) => {
+                        if (values == null) {return}
                         // @ts-ignore
                         const { data: updatedNote, errors } =  await client.models.Note.update(values);
                         // TODO: Better error handling
