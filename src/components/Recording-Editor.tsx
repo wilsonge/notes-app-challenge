@@ -59,7 +59,15 @@ const Title = styled.h2`
   color: #74b49b;
 `;
 
-const RecordingEditor = props => (
+type RecordingEditorProps = {
+    onDismiss: () => void;
+    title?: any;
+    text: any;
+    onSave: (arg0: { title: any; text: any; }) => void;
+}
+
+const RecordingEditor = (props: RecordingEditorProps) => (
+    // @ts-ignore
     <Dialog onDismiss={props.onDismiss}>
         <Title>{props.title ? "Edit Note" : "Create Note"}</Title>
         <Formik

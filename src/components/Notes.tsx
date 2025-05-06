@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { API, graphqlOperation } from "aws-amplify";
 import styled from "@emotion/styled";
 
 import Note from "./Note";
-import { listNotes } from "../graphql/queries";
-import { updateNote, deleteNote } from "../graphql/mutations";
+import type { Schema } from "../../amplify/data/resource";
+import { generateClient } from "aws-amplify/data";
+
+const client = generateClient<Schema>();
 
 const Container = styled("div")`
   max-width: 800px;
@@ -13,57 +14,48 @@ const Container = styled("div")`
 `;
 
 const NotesComponent = () => {
-    const [notes, setNotes] = useState([]);
+    const [notes, setNotes] = useState<Schema["Note"]["type"][]>([]);
+
+    const fetchNotes = async () => {
+        const { data: items, errors } = await client.models.Note.list();
+        // TODO: Better error handling
+        if (errors) {}
+        setNotes(items);
+    };
 
     useEffect(() => {
-        const fetchNotes = async () => {
-            const result = await API.graphql(graphqlOperation(listNotes));
-
-            setNotes(
-                result.data.listNotes.items.sort((a, b) => {
-                    if (a.updatedAt > b.updatedAt) return -1;
-                    else return 1;
-                })
-            );
-        };
-
         fetchNotes();
     }, []);
 
     return (
         <Container>
             {notes.map(note => (
+                // @ts-ignore
                 <Note
                     key={note.id}
                     {...note}
-                    onSaveChanges={async values => {
-                        const result = await API.graphql(
-                            graphqlOperation(updateNote, {
-                                input: {
-                                    ...note,
-                                    ...values
-                                }
-                            })
-                        );
-
+                    onSaveChanges={async (values: Schema["Note"]["type"]) => {
+                        // @ts-ignore
+                        const { data: updatedNote, errors } =  await client.models.Note.update(values);
+                        // TODO: Better error handling
+                        if (errors) {
+                            return;
+                        }
+                        // TODO: Better error handling
+                        if (updatedNote == null) {
+                            return;
+                        }
                         setNotes(
                             notes.map(n => {
-                                return n.id === note.id ? result.data.updateNote : n;
+                                return n.id === note.id ? updatedNote : n;
                             })
                         );
                     }}
                     onDelete={async () => {
-                        await API.graphql(
-                            graphqlOperation(deleteNote, {
-                                input: {
-                                    id: note.id
-                                }
-                            })
-                        );
+                        await client.models.Note.delete({id: note.id})
 
                         setNotes(notes.filter(n => n.id !== note.id));
-                    }}
-                />
+                    }}></Note>
             ))}
         </Container>
     );

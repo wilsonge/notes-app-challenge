@@ -1,32 +1,28 @@
-import { Dialog, DialogOverlay, DialogContent } from "@ariakit/react";
-import styled from "@emotion/styled";
+import { Dialog, DialogHeading, DialogDismiss } from "@ariakit/react";
+import { PropsWithChildren, useState } from "react"
 
-const StyledDialogOverlay = styled(DialogOverlay)`
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: hsla(120, 29%, 97%, 0.95);
-  padding: 24px;
-  z-index: 99;
-`;
+interface DialogComponentProps extends PropsWithChildren<{}> {
+    onDismiss: () => void;
+}
 
-const StyledDialogContent = styled(DialogContent)`
-  background-color: #ffffff;
-  border-radius: 4px;
-  max-width: 800px;
-  box-shadow: 0 0 9px rgba(255, 255, 255, 0.3);
-  padding: 24px;
-  margin: 24px auto;
-`;
-
-const DialogComponent = props => (
-    <Dialog aria-label="Popup">
-        <StyledDialogOverlay>
-            <StyledDialogContent aria-label="Dialog">{props.children}</StyledDialogContent>
-        </StyledDialogOverlay>
+const DialogComponent = (props: DialogComponentProps) => {
+    const [open, setOpen] = useState(false);
+    <Dialog
+        open={open}
+        onClose={() => {
+            props.onDismiss();
+            return setOpen(false)
+        }}
+        className="dialog"
+    >
+        <DialogHeading className="heading">
+            Success
+        </DialogHeading>
+        {props.children}
+        <div>
+            <DialogDismiss className="button">OK</DialogDismiss>
+        </div>
     </Dialog>
-);
+};
 
 export default DialogComponent;

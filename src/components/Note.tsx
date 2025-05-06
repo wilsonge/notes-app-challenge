@@ -62,6 +62,7 @@ const Info = styled.div`
   padding: 24px;
 `;
 
+
 type NoteComponentProps = {
     title: string | undefined;
     text: string | undefined;

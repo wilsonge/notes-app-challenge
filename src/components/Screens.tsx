@@ -4,7 +4,7 @@ import { signOut } from 'aws-amplify/auth';
 import { TabProvider, TabList, Tab, TabPanel, useTabStore } from "@ariakit/react";
 
 import Notes from "./Notes";
-// import Record from "./Record";
+import Record from "./Record";
 
 const Header = styled("div")`
   background-color: #ffffff;
@@ -101,10 +101,10 @@ const Screens = () => {
                 </StyledTabList>
                 <StyledTabPanels>
                     <StyledTabPanel>
-                        <Notes setTabIndex={setTabIndex} />
+                        <Notes />
                     </StyledTabPanel>
                     <StyledTabPanel>
-                        {/* <Record setTabIndex={setTabIndex} /> */}
+                        <Record />
                     </StyledTabPanel>
                 </StyledTabPanels>
             </TabProvider>

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { API, graphqlOperation } from "aws-amplify";
-import { Predictions } from "aws-amplify";
+// import { Predictions } from "aws-amplify";
 import { keyframes, css } from "@emotion/core";
 import styled from "@emotion/styled";
 import {
@@ -11,7 +10,11 @@ import {
 import mic from "microphone-stream";
 
 import RecordingEditor from "./Recording-Editor";
-import { createNote } from "../graphql/mutations";
+import type { Schema } from "../../amplify/data/resource";
+import { generateClient } from "aws-amplify/data";
+import MicrophoneStream from "microphone-stream";
+
+const client = generateClient<Schema>();
 
 const Container = styled("div")`
   margin: 16px auto;
@@ -33,16 +36,18 @@ const pulse = keyframes`
   }
 `;
 
-const RecordComponent = props => {
+const RecordComponent = () => {
     const [isRecording, setIsRecording] = useState(false);
     const [showRecordingEditor, setShowRecordingEditor] = useState(false);
+    // TODO: This can be unignored once we put back in predictions.
+    // @ts-ignore
     const [recordingText, setRecordingText] = useState("");
-    const [isConverting, setIsConverting] = useState("");
-    const [micStream, setMicStream] = useState();
+    const [isConverting, setIsConverting] = useState(false);
+    const [micStream, setMicStream] = useState<MicrophoneStream|null>();
     const [audioBuffer] = useState(
         (function() {
-            let buffer = [];
-            function add(raw) {
+            let buffer: Array<any> = [];
+            function add(raw: Float32Array) {
                 buffer = buffer.concat(...raw);
                 return buffer;
             }
@@ -55,7 +60,7 @@ const RecordComponent = props => {
                 reset: function() {
                     newBuffer();
                 },
-                addData: function(raw) {
+                addData: function(raw: Float32Array) {
                     return add(raw);
                 },
                 getData: function() {
@@ -73,7 +78,7 @@ const RecordComponent = props => {
         const startMic = new mic();
 
         startMic.setStream(stream);
-        startMic.on("data", chunk => {
+        startMic.on('data', (chunk: Buffer) => {
             var raw = mic.toRaw(chunk);
             if (raw == null) {
                 return;
@@ -86,22 +91,26 @@ const RecordComponent = props => {
     };
 
     const stopRecording = async () => {
+        // TODO: better error handling
+        if (micStream == null) { return; }
         micStream.stop();
         setIsRecording(false);
         setIsConverting(true);
 
+        // TODO: New predictions API required
+        // @ts-ignore
         const buffer = audioBuffer.getData();
-        const result = await Predictions.convert({
-            transcription: {
-                source: {
-                    bytes: buffer
-                }
-            }
-        });
+        // const result = await Predictions.convert({
+        //     transcription: {
+        //         source: {
+        //             bytes: buffer
+        //         }
+        //     }
+        // });
 
         setMicStream(null);
         audioBuffer.reset();
-        setRecordingText(result.transcription.fullText);
+        // setRecordingText(result.transcription.fullText);
         setIsConverting(false);
         setShowRecordingEditor(true);
     };
@@ -181,8 +190,12 @@ const RecordComponent = props => {
                         setShowRecordingEditor(false);
                     }}
                     onSave={async data => {
-                        await API.graphql(graphqlOperation(createNote, { input: data }));
-                        props.setTabIndex(0);
+                        // TODO: We probably do wanna use this!
+                        // @ts-ignore
+                        const { errors, data: newNote } = await client.models.Note.create(data)
+                        // TODO: This would reset the screen tab back from "Record" to "Notes". Currently no longer  works
+                        //       with the migration to the new Tabs UI
+                        // props.setTabIndex(0);
                     }}
                 />
             )}
