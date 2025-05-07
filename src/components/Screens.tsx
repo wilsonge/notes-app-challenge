@@ -42,9 +42,9 @@ const Screens = () => {
                 </SignOutButton>
             </Header>
             <TabProvider defaultSelectedId={defaultSelectedId}>
-                <TabList store={tab}>
-                    <Tab id={defaultSelectedId}>Notes</Tab>
-                    <Tab>Record</Tab>
+                <TabList className="tab-list" store={tab}>
+                    <Tab className="tab" id={defaultSelectedId}>Notes</Tab>
+                    <Tab className="tab">Record</Tab>
                 </TabList>
                 <div className="panels">
                     <TabPanel store={tab} tabId={defaultSelectedId}>

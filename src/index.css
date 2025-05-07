@@ -1,0 +1,54 @@
+.tab-list {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tab {
+    display: flex;
+    height: 2.5rem;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    border-radius: 0.25rem;
+    border-style: none;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    text-decoration-line: none;
+    outline-width: 2px;
+    outline-offset: 2px;
+    outline-color: hsl(204 100% 40%);
+}
+
+.tab:hover {
+    background-color: rgb(0 0 0 / 7.5%);
+}
+
+.tab[aria-disabled="true"] {
+    opacity: 0.5;
+}
+
+.tab[aria-selected="true"] {
+    background-color: hsl(204 100% 40%);
+    color: white;
+}
+
+.tab:hover[aria-selected="true"] {
+    background-color: hsl(204 100% 32%);
+}
+
+.tab[data-focus-visible] {
+    outline-style: solid;
+}
+
+.tab:active,
+.tab[data-active] {
+    padding-top: 0.125rem;
+}
+
+.panels {
+    padding: 0.5rem;
+}
