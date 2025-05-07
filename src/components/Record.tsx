@@ -97,19 +97,25 @@ const RecordComponent = () => {
 
         // @ts-ignore
         const buffer: Buffer = audioBuffer.getData();
-        const result = await Predictions.convert({
-            transcription: {
-                source: {
-                    bytes: buffer
+
+        try {
+            const result = await Predictions.convert({
+                transcription: {
+                    source: {
+                        bytes: buffer
+                    }
                 }
-            }
-        });
+            });
+            setRecordingText(result.transcription.fullText);
+        }
+        catch (e) {
+            console.error(e);
+        }
 
         setMicStream(null);
         audioBuffer.reset();
-        setRecordingText(result.transcription.fullText);
-        setIsConverting(false);
         setShowRecordingEditor(true);
+        setIsConverting(false);
     };
 
     return (
