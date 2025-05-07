@@ -110,6 +110,7 @@ const RecordComponent = () => {
         }
         catch (e) {
             console.error(e);
+            console.log(e.message);
         }
 
         setMicStream(null);
