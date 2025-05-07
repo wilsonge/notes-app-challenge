@@ -16,11 +16,11 @@ const Title = styled("h1")`
   margin-top: 0;
   margin-bottom: 0;
   text-transform: uppercase;
-  color: #74b49b;
+  color: var(--teal);
 `;
 
 const SignOutButton = styled(Button)`
-  background-color: #74b49b;
+  background-color: var(--teal);
   cursor: pointer;
 `;
 

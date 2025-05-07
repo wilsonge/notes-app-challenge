@@ -1,3 +1,10 @@
+:root {
+    --teal: #00c6c2;
+    --midnight: #052831;
+    --putty: #fdf7ea;
+    --white: #ffffff;
+}
+
 .tab-list {
     display: flex;
     gap: 0.5rem;
@@ -20,7 +27,7 @@
     text-decoration-line: none;
     outline-width: 2px;
     outline-offset: 2px;
-    outline-color: hsl(204 100% 40%);
+    outline-color: var(--teal);
 }
 
 .tab:hover {
@@ -32,12 +39,13 @@
 }
 
 .tab[aria-selected="true"] {
-    background-color: hsl(204 100% 40%);
+    background-color: var(--teal);
     color: white;
 }
 
 .tab:hover[aria-selected="true"] {
-    background-color: hsl(204 100% 32%);
+    /* TODO: Should be a lighter version of our primary color teal */
+    background-color: var(--teal);
 }
 
 .tab[data-focus-visible] {
