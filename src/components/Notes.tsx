@@ -41,6 +41,7 @@ const NotesComponent = () => {
 
     return (
         <Container>
+            <h2>Here are your notes</h2>
             {notes.map((note: Note) => (
                 <Note
                     key={note.id}
