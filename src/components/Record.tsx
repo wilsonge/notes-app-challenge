@@ -132,9 +132,11 @@ const RecordComponent = () => {
             }
         }
         catch (e: unknown) {
-            const error = e as Error;
-            console.error(error);
-            console.log(error.message);
+            let message = 'Unknown Error'
+            if (e instanceof Error) message = e.message
+
+            console.error(e);
+            console.log(message);
         }
 
         setMicStream(null);
