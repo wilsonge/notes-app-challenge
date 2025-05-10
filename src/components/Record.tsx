@@ -39,7 +39,7 @@ const pulse = keyframes`
 interface AudioBufferUtil {
     reset: () => void;
     addData: (raw: Float32Array) => Array<number>;
-    getData: () => Array<number>;
+    getData: () => Buffer;
 }
 
 interface NoteData {
@@ -74,8 +74,8 @@ const RecordComponent = () => {
                 addData: function(raw: Float32Array): Array<number> {
                     return add(raw);
                 },
-                getData: function(): Array<number> {
-                    return buffer;
+                getData: function(): Buffer {
+                    return Buffer.from(buffer)
                 }
             };
         })()
@@ -115,7 +115,7 @@ const RecordComponent = () => {
         setIsRecording(false);
         setIsConverting(true);
 
-        const buffer: number[] = audioBuffer.getData();
+        const buffer = audioBuffer.getData();
         console.log(buffer);
 
         try {
