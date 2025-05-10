@@ -116,6 +116,7 @@ const RecordComponent = () => {
         setIsConverting(true);
 
         const buffer: number[] = audioBuffer.getData();
+        console.log(buffer);
 
         try {
             // @ts-ignore
