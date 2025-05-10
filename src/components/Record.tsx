@@ -7,12 +7,11 @@ import {
     FaMicrophoneAlt,
     FaMicrophoneAltSlash
 } from "react-icons/fa";
-import mic from "microphone-stream";
+import MicrophoneStream from "microphone-stream";
 
 import RecordingEditor from "./Recording-Editor";
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
-import MicrophoneStream from "microphone-stream";
 
 const client = generateClient<Schema>();
 
@@ -25,80 +24,101 @@ const Container = styled("div")`
 `;
 
 const pulse = keyframes`
-  0% {
-    transform: scale(1);
-    opacity: 0.3;
-  }
+    0% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
 
-  100% {
-    transform: scale(2);
-    opacity: 0;
-  }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
 `;
 
+// Define type for the audio buffer utility
+interface AudioBufferUtil {
+    reset: () => void;
+    addData: (raw: Float32Array) => Array<number>;
+    getData: () => Array<number>;
+}
+
+interface NoteData {
+    title: string;
+    text: string;
+}
+
 const RecordComponent = () => {
-    const [isRecording, setIsRecording] = useState(false);
-    const [showRecordingEditor, setShowRecordingEditor] = useState(false);
-    const [recordingText, setRecordingText] = useState("");
-    const [isConverting, setIsConverting] = useState(false);
-    const [micStream, setMicStream] = useState<MicrophoneStream|null>();
-    const [audioBuffer] = useState(
-        (function() {
-            let buffer: Array<any> = [];
-            function add(raw: Float32Array) {
-                buffer = buffer.concat(...raw);
+    const [isRecording, setIsRecording] = useState<boolean>(false);
+    const [showRecordingEditor, setShowRecordingEditor] = useState<boolean>(false);
+    const [recordingText, setRecordingText] = useState<string>("");
+    const [isConverting, setIsConverting] = useState<boolean>(false);
+    const [micStream, setMicStream] = useState<MicrophoneStream | null>(null);
+    const [audioBuffer] = useState<AudioBufferUtil>(
+        (function(): AudioBufferUtil {
+            let buffer: Array<number> = [];
+
+            function add(raw: Float32Array): Array<number> {
+                buffer = buffer.concat(Array.from(raw));
                 return buffer;
             }
-            function newBuffer() {
+
+            function newBuffer(): void {
                 console.log("resetting buffer");
                 buffer = [];
             }
 
             return {
-                reset: function() {
+                reset: function(): void {
                     newBuffer();
                 },
-                addData: function(raw: Float32Array) {
+                addData: function(raw: Float32Array): Array<number> {
                     return add(raw);
                 },
-                getData: function() {
+                getData: function(): Array<number> {
                     return buffer;
                 }
             };
         })()
     );
 
-    const startRecording = async () => {
-        const stream = await window.navigator.mediaDevices.getUserMedia({
-            video: false,
-            audio: true
-        });
-        const startMic = new MicrophoneStream();
+    const startRecording = async (): Promise<void> => {
+        try {
+            const stream = await window.navigator.mediaDevices.getUserMedia({
+                video: false,
+                audio: true
+            });
 
-        startMic.setStream(stream);
-        startMic.on('data', (chunk: Buffer) => {
-            var raw = mic.toRaw(chunk);
-            if (raw == null) {
-                return;
-            }
-            audioBuffer.addData(raw);
-        });
+            const startMic = new MicrophoneStream();
+            startMic.setStream(stream);
 
-        setMicStream(startMic);
-        setIsRecording(true);
+            startMic.on('data', (chunk: Buffer) => {
+                const raw = MicrophoneStream.toRaw(chunk);
+                if (raw == null) {
+                    return;
+                }
+                audioBuffer.addData(raw);
+            });
+
+            setMicStream(startMic);
+            setIsRecording(true);
+        } catch (error) {
+            console.error("Error starting recording:", error);
+        }
     };
 
-    const stopRecording = async () => {
-        // TODO: better error handling
-        if (micStream == null) { return; }
+    const stopRecording = async (): Promise<void> => {
+        if (micStream == null) {
+            return;
+        }
+
         micStream.stop();
         setIsRecording(false);
         setIsConverting(true);
 
-        // @ts-ignore
-        const buffer: Buffer = audioBuffer.getData();
+        const buffer: number[] = audioBuffer.getData();
 
         try {
+            // @ts-ignore
             const result = await Predictions.convert({
                 transcription: {
                     source: {
@@ -106,11 +126,15 @@ const RecordComponent = () => {
                     }
                 }
             });
-            setRecordingText(result.transcription.fullText);
+
+            if (result.transcription?.fullText) {
+                setRecordingText(result.transcription.fullText);
+            }
         }
-        catch (e) {
-            console.error(e);
-            console.log(e.message);
+        catch (e: unknown) {
+            const error = e as Error;
+            console.error(error);
+            console.log(error.message);
         }
 
         setMicStream(null);
@@ -123,44 +147,43 @@ const RecordComponent = () => {
         <Container>
             <div
                 css={css`
-          position: relative;
-          justify-content: center;
-          align-items: center;
-          width: 120px;
-          height: 120px;
-        `}
+                    position: relative;
+                    justify-content: center;
+                    align-items: center;
+                    width: 120px;
+                    height: 120px;
+                `}
             >
                 <div
                     css={[
                         css`
-              width: 100%;
-              height: 100%;
-              top: 0;
-              left: 0;
-              position: absolute;
-
-              border-radius: 50%;
-              background-color: #74b49b;
-            `,
+                            width: 100%;
+                            height: 100%;
+                            top: 0;
+                            left: 0;
+                            position: absolute;
+                            border-radius: 50%;
+                            background-color: #74b49b;
+                        `,
                         isRecording || isConverting
                             ? css`
-                  animation: ${pulse} 1.5s ease infinite;
-                `
+                                animation: ${pulse} 1.5s ease infinite;
+                            `
                             : {}
                     ]}
                 />
                 <div
                     css={css`
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            position: absolute;
-            border-radius: 50%;
-            background-color: #74b49b;
-            display: flex;
-            cursor: pointer;
-          `}
+                        width: 100%;
+                        height: 100%;
+                        top: 0;
+                        left: 0;
+                        position: absolute;
+                        border-radius: 50%;
+                        background-color: #74b49b;
+                        display: flex;
+                        cursor: pointer;
+                    `}
                     onClick={() => {
                         if (!isRecording) {
                             startRecording();
@@ -193,13 +216,19 @@ const RecordComponent = () => {
                     onDismiss={() => {
                         setShowRecordingEditor(false);
                     }}
-                    onSave={async data => {
-                        // TODO: We probably do wanna use this!
-                        // @ts-ignore
-                        const { errors, data: newNote } = await client.models.Note.create(data)
-                        // TODO: This would reset the screen tab back from "Record" to "Notes". Currently no longer  works
-                        //       with the migration to the new Tabs UI
-                        // props.setTabIndex(0);
+                    onSave={async (data: NoteData) => {
+                        try {
+                            // @ts-ignore
+                            const { errors, data: NoteData } = await client.models.Note.create(data);
+                            if (errors) {
+                                console.error("Error creating note:", errors);
+                            }
+                            // TODO: This would reset the screen tab back from "Record" to "Notes". Currently no longer works
+                            // with the migration to the new Tabs UI
+                            // props.setTabIndex(0);
+                        } catch (error) {
+                            console.error("Error saving note:", error);
+                        }
                     }}
                 />
             )}
