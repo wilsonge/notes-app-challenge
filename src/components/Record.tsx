@@ -38,8 +38,8 @@ const pulse = keyframes`
 // Define type for the audio buffer utility
 interface AudioBufferUtil {
     reset: () => void;
-    addData: (raw: Buffer) => void;
-    getData: () => Buffer<ArrayBufferLike>[];
+    addData: (raw: Uint8Array) => void;
+    getData: () => Uint8Array[];
 }
 
 interface NoteData {
@@ -55,17 +55,17 @@ const RecordComponent = () => {
     const [micStream, setMicStream] = useState<MicrophoneStream | null>(null);
     const [audioBuffer] = useState<AudioBufferUtil>(
         (function(): AudioBufferUtil {
-            let buffer: Buffer<ArrayBufferLike>[] = [];
+            let buffer: Uint8Array[] = [];
 
             return {
                 reset: function(): void {
                     console.log("resetting buffer");
                     buffer = [];
                 },
-                addData: function(chunk: Buffer<ArrayBufferLike>): void {
+                addData: function(chunk: Uint8Array): void {
                     buffer.push(chunk);
                 },
-                getData: function(): Buffer<ArrayBufferLike>[] {
+                getData: function(): Uint8Array[] {
                     return buffer
                 }
             };
@@ -82,7 +82,7 @@ const RecordComponent = () => {
             const startMic = new MicrophoneStream();
             startMic.setStream(stream);
 
-            startMic.on('data', (chunk: Buffer) => {
+            startMic.on('data', (chunk: Uint8Array) => {
                 audioBuffer.addData(chunk);
             });
 
