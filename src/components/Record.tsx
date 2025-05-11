@@ -110,13 +110,10 @@ const RecordComponent = () => {
                     source: {
                         bytes: Buffer.concat(buffer),
                     },
-                    language: 'en-GB',
                 }
             });
 
-            if (result.transcription?.fullText) {
-                setRecordingText(result.transcription.fullText);
-            }
+            setRecordingText(result.transcription.fullText);
         }
         catch (e: unknown) {
             console.log(typeof e);
