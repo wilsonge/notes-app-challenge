@@ -1,13 +1,11 @@
 import styled from "@emotion/styled";
 
-import { Button, Input, Label } from '@aws-amplify/ui-react';
+import { Input, Label } from '@aws-amplify/ui-react';
+import { Dialog, DialogDismiss, DialogHeading } from "@ariakit/react";
 import { Formik } from "formik";
 
-import Dialog from "./Dialog";
-
-const StyledButton = styled(Button)`
+const StyledButton = styled(DialogDismiss)`
   background-color: #74b49b;
-  cursor: pointer;
 `;
 
 const StyledLabel = styled(Label)`
@@ -55,7 +53,7 @@ const InputContainer = styled.div`
   margin-bottom: 16px;
 `;
 
-const Title = styled.h2`
+const Title = styled(DialogHeading)`
   color: #74b49b;
 `;
 
@@ -73,8 +71,8 @@ type RecordingEditorProps = {
 }
 
 const RecordingEditor = (props: RecordingEditorProps) => (
-    <Dialog open={props.dialogOpen} onDismiss={props.onDismiss}>
-        <Title>{props.title ? "Edit Note" : "Create Note"}</Title>
+    <Dialog open={props.dialogOpen} onClose={() => props.onDismiss()} className="dialog">
+        <Title className="heading">{props.title ? "Edit Note" : "Create Note"}</Title>
         <Formik
             initialValues={{
                 title: props.title || "",
@@ -122,7 +120,9 @@ const RecordingEditor = (props: RecordingEditorProps) => (
                         >
                             Cancel
                         </StyledButton>
-                        <StyledButton type="submit" disabled={isSubmitting}>
+                        <StyledButton
+                            type="submit" disabled={isSubmitting}
+                        >
                             {isSubmitting ? "Saving..." : "Save"}
                         </StyledButton>
                     </Actions>
