@@ -2,6 +2,7 @@ import { MouseEventHandler, useState } from "react";
 import styled from "@emotion/styled";
 import { FaRegEdit, FaPlay, FaRegTrashAlt } from "react-icons/fa";
 import { Predictions } from '@aws-amplify/predictions';
+import { Icon } from '@aws-amplify/ui-react';
 
 import RecordingEditor from "./Recording-Editor";
 
@@ -39,7 +40,7 @@ const Text = styled("p")`
   margin-top: 0;
 `;
 
-const Icon = styled("button")`
+const ButtonIcon = styled("button")`
   padding: 8px 10px;
   display: inline-flex;
   justify-content: center;
@@ -114,15 +115,15 @@ const NotesComponent = (props: NoteComponentProps) => {
             </Info>
             <Divider />
             <NoteActions>
-                <Icon onClick={() => playAudio()}>
-                    <FaPlay />
-                </Icon>
-                <Icon onClick={() => setShowEditor(true)}>
-                    <FaRegEdit />
-                </Icon>
-                <Icon>
-                    <FaRegTrashAlt onClick={props.onDelete} />
-                </Icon>
+                <ButtonIcon onClick={() => playAudio()}>
+                    <Icon as={FaPlay} />;
+                </ButtonIcon>
+                <ButtonIcon onClick={() => setShowEditor(true)}>
+                    <Icon as={FaRegEdit} />;
+                </ButtonIcon>
+                <ButtonIcon>
+                    <Icon as={FaRegTrashAlt} onClick={props.onDelete} />;
+                </ButtonIcon>
             </NoteActions>
 
             <RecordingEditor
