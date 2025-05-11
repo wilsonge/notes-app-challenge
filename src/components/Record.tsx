@@ -114,6 +114,7 @@ const RecordComponent = () => {
             });
 
             setRecordingText(result.transcription.fullText);
+            console.log(result.transcription.fullText);
         }
         catch (e: unknown) {
             let message = 'Unknown Error'
