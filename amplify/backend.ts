@@ -23,6 +23,13 @@ backend.addOutput({
     custom: {
         Predictions: {
             convert: {
+                speechGenerator: {
+                    defaults: {
+                        voiceId: "Ivy",
+                    },
+                    proxy: false,
+                    region: backend.auth.stack.region,
+                },
                 transcription: {
                     defaults: {
                         language: "en-GB",

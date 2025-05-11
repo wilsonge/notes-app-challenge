@@ -1,7 +1,7 @@
 import { MouseEventHandler, useState } from "react";
 import styled from "@emotion/styled";
 import { FaRegEdit, FaPlay, FaRegTrashAlt } from "react-icons/fa";
-// import { Predictions } from "aws-amplify";
+import { Predictions } from '@aws-amplify/predictions';
 
 import RecordingEditor from "./Recording-Editor";
 
@@ -84,26 +84,26 @@ const NotesComponent = (props: NoteComponentProps) => {
     const [showEditor, setShowEditor] = useState(false);
 
     const playAudio = async () => {
-        // const result = await Predictions.convert({
-        //     textToSpeech: {
-        //         source: {
-        //             text: props.text
-        //         }
-        //     }
-        // });
-        //
-        // const audioCtx = new AudioContext();
-        // const source = audioCtx.createBufferSource();
-        //
-        // audioCtx.decodeAudioData(
-        //     result.audioStream,
-        //     buffer => {
-        //         source.buffer = buffer;
-        //         source.connect(audioCtx.destination);
-        //         source.start(0);
-        //     },
-        //     error => console.log(error)
-        // );
+        const result = await Predictions.convert({
+            textToSpeech: {
+                source: {
+                    text: props.text
+                }
+            }
+        });
+
+        const audioCtx = new AudioContext();
+        const source = audioCtx.createBufferSource();
+
+        await audioCtx.decodeAudioData(
+            result.audioStream,
+            buffer => {
+                source.buffer = buffer;
+                source.connect(audioCtx.destination);
+                source.start(0);
+            },
+            error => console.log(error)
+        );
     };
 
     return (
