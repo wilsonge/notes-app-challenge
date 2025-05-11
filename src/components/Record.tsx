@@ -38,8 +38,8 @@ const pulse = keyframes`
 // Define type for the audio buffer utility
 interface AudioBufferUtil {
     reset: () => void;
-    addData: (raw: Float32Array) => Array<number>;
-    getData: () => Buffer;
+    addData: (raw: Buffer) => void;
+    getData: () => Buffer<ArrayBufferLike>;
 }
 
 interface NoteData {
@@ -55,27 +55,19 @@ const RecordComponent = () => {
     const [micStream, setMicStream] = useState<MicrophoneStream | null>(null);
     const [audioBuffer] = useState<AudioBufferUtil>(
         (function(): AudioBufferUtil {
-            let buffer: Array<number> = [];
-
-            function add(raw: Float32Array): Array<number> {
-                buffer = buffer.concat(Array.from(raw));
-                return buffer;
-            }
-
-            function newBuffer(): void {
-                console.log("resetting buffer");
-                buffer = [];
-            }
+            let buffer: Buffer<ArrayBufferLike>[] = [];
 
             return {
                 reset: function(): void {
-                    newBuffer();
+                    console.log("resetting buffer");
+                    buffer = [];
                 },
-                addData: function(raw: Float32Array): Array<number> {
-                    return add(raw);
+                addData: function(chunk: Buffer<ArrayBufferLike>): void {
+                    buffer.push(chunk);
                 },
-                getData: function(): Buffer {
-                    return Buffer.from(buffer)
+                // @ts-ignore
+                getData: function(): Buffer<ArrayBufferLike>[] {
+                    return buffer
                 }
             };
         })()
@@ -92,11 +84,7 @@ const RecordComponent = () => {
             startMic.setStream(stream);
 
             startMic.on('data', (chunk: Buffer) => {
-                const raw = MicrophoneStream.toRaw(chunk);
-                if (raw == null) {
-                    return;
-                }
-                audioBuffer.addData(raw);
+                audioBuffer.addData(chunk);
             });
 
             setMicStream(startMic);
