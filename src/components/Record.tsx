@@ -39,7 +39,7 @@ const pulse = keyframes`
 interface AudioBufferUtil {
     reset: () => void;
     addData: (raw: Buffer) => void;
-    getData: () => Buffer<ArrayBufferLike>;
+    getData: () => Buffer<ArrayBufferLike>[];
 }
 
 interface NoteData {
@@ -65,7 +65,6 @@ const RecordComponent = () => {
                 addData: function(chunk: Buffer<ArrayBufferLike>): void {
                     buffer.push(chunk);
                 },
-                // @ts-ignore
                 getData: function(): Buffer<ArrayBufferLike>[] {
                     return buffer
                 }
@@ -104,15 +103,14 @@ const RecordComponent = () => {
         setIsConverting(true);
 
         const buffer = audioBuffer.getData();
-        console.log(buffer);
 
         try {
-            // @ts-ignore
             const result = await Predictions.convert({
                 transcription: {
                     source: {
-                        bytes: buffer
-                    }
+                        bytes: Buffer.concat(buffer),
+                    },
+                    language: 'en-GB',
                 }
             });
 
