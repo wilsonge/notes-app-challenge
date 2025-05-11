@@ -8,7 +8,7 @@ const backend = defineBackend({
     data,
 });
 
-backend.auth.resources.unauthenticatedUserIamRole.addToPrincipalPolicy(
+backend.auth.resources.authenticatedUserIamRole.addToPrincipalPolicy(
     new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [

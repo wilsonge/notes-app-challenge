@@ -116,11 +116,9 @@ const RecordComponent = () => {
             setRecordingText(result.transcription.fullText);
         }
         catch (e: unknown) {
-            console.log(typeof e);
             let message = 'Unknown Error'
             if (e instanceof Error) {
                 message = e.message
-                console.log(e.stack);
             }
 
             console.error(e);
