@@ -27,10 +27,13 @@ const Container = styled("div")`
 const NotesComponent = () => {
     const [notes, setNotes] = useState<Note[]>([]);
 
-    const fetchNotes = async () => {
+    const fetchNotes: () => Promise<void> = async () => {
         const { data: items, errors } = await client.models.Note.list();
         // TODO: Better error handling
-        if (errors) {}
+        if (errors) {
+            console.log(errors);
+            return;
+        }
         // @ts-ignore
         setNotes(items);
     };

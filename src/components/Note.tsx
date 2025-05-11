@@ -125,17 +125,15 @@ const NotesComponent = (props: NoteComponentProps) => {
                 </Icon>
             </NoteActions>
 
-            {showEditor && (
-                <RecordingEditor
-                    dialogOpen={showEditor}
-                    title={props.title}
-                    text={props.text}
-                    onDismiss={() => {
-                        setShowEditor(false);
-                    }}
-                    onSave={props.onSaveChanges}
-                />
-            )}
+            <RecordingEditor
+                dialogOpen={showEditor}
+                title={props.title}
+                text={props.text}
+                onDismiss={() => {
+                    setShowEditor(false);
+                }}
+                onSave={props.onSaveChanges}
+            />
         </Note>
     );
 };

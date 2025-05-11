@@ -199,29 +199,27 @@ const RecordComponent = () => {
                     )}
                 </div>
             </div>
-            {showRecordingEditor && (
-                <RecordingEditor
-                    dialogOpen={showRecordingEditor}
-                    text={recordingText}
-                    onDismiss={() => {
-                        setShowRecordingEditor(false);
-                    }}
-                    onSave={async (data: NoteData) => {
-                        try {
-                            // @ts-ignore
-                            const { errors, data: NoteData } = await client.models.Note.create(data);
-                            if (errors) {
-                                console.error("Error creating note:", errors);
-                            }
-                            // TODO: This would reset the screen tab back from "Record" to "Notes". Currently no longer works
-                            // with the migration to the new Tabs UI
-                            // props.setTabIndex(0);
-                        } catch (error) {
-                            console.error("Error saving note:", error);
+            <RecordingEditor
+                dialogOpen={showRecordingEditor}
+                text={recordingText}
+                onDismiss={() => {
+                    setShowRecordingEditor(false);
+                }}
+                onSave={async (data: NoteData) => {
+                    try {
+                        const { data: returnedData, errors } = await client.models.Note.create(data);
+                        if (errors) {
+                            console.error("Error creating note:", errors);
                         }
-                    }}
-                />
-            )}
+                        console.log(returnedData);
+                        // TODO: This would reset the screen tab back from "Record" to "Notes". Currently no longer works
+                        // with the migration to the new Tabs UI
+                        // props.setTabIndex(0);
+                    } catch (error) {
+                        console.error("Error saving note:", error);
+                    }
+                }}
+            />
         </Container>
     );
 };
