@@ -127,6 +127,7 @@ const NotesComponent = (props: NoteComponentProps) => {
 
             {showEditor && (
                 <RecordingEditor
+                    dialogOpen={showEditor}
                     title={props.title}
                     text={props.text}
                     onDismiss={() => {
