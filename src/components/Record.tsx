@@ -201,6 +201,7 @@ const RecordComponent = () => {
             </div>
             {showRecordingEditor && (
                 <RecordingEditor
+                    dialogOpen={showRecordingEditor}
                     text={recordingText}
                     onDismiss={() => {
                         setShowRecordingEditor(false);

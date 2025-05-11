@@ -1,20 +1,16 @@
 import { Dialog, DialogHeading, DialogDismiss } from "@ariakit/react";
-import { PropsWithChildren, useState } from "react"
+import { PropsWithChildren } from "react"
 
 interface DialogComponentProps extends PropsWithChildren<{}> {
     onDismiss: () => void;
+    open: boolean;
 }
 
 const DialogComponent = (props: DialogComponentProps) => {
-    const [open, setOpen] = useState(false);
-
     return (
         <Dialog
-            open={open}
-            onClose={() => {
-                props.onDismiss();
-                return setOpen(false)
-            }}
+            open={props.open}
+            onClose={() => props.onDismiss()}
             className="dialog"
         >
             <DialogHeading className="heading">

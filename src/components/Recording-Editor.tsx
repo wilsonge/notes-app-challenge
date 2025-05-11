@@ -69,10 +69,11 @@ type RecordingEditorProps = {
     title?: any;
     text: any;
     onSave: (values: NoteEditableData) => Promise<void>;
+    dialogOpen: boolean;
 }
 
 const RecordingEditor = (props: RecordingEditorProps) => (
-    <Dialog onDismiss={props.onDismiss}>
+    <Dialog open={props.dialogOpen} onDismiss={props.onDismiss}>
         <Title>{props.title ? "Edit Note" : "Create Note"}</Title>
         <Formik
             initialValues={{
