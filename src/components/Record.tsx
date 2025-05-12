@@ -13,6 +13,7 @@ import RecordingEditor from "./Recording-Editor";
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import { Icon } from "@aws-amplify/ui-react";
+import { INoteEditableData } from "../types.ts"
 
 const client = generateClient<Schema>();
 
@@ -41,11 +42,6 @@ interface AudioBufferUtil {
     reset: () => void;
     addData: (raw: Uint8Array) => void;
     getData: () => Uint8Array[];
-}
-
-interface NoteData {
-    title: string;
-    text: string;
 }
 
 const RecordComponent = () => {
@@ -89,7 +85,7 @@ const RecordComponent = () => {
 
             setMicStream(startMic);
             setIsRecording(true);
-        } catch (error) {
+        } catch (error: unknown) {
             console.error("Error starting recording:", error);
         }
     };
@@ -117,14 +113,8 @@ const RecordComponent = () => {
             setRecordingText(result.transcription.fullText);
             console.log(result.transcription.fullText);
         }
-        catch (e: unknown) {
-            let message = 'Unknown Error'
-            if (e instanceof Error) {
-                message = e.message
-            }
-
-            console.error(e);
-            console.log(message);
+        catch (error: unknown) {
+            console.error("Error transcribing recording:", error);
         }
 
         setMicStream(null);
@@ -200,8 +190,9 @@ const RecordComponent = () => {
                 onDismiss={() => {
                     setShowRecordingEditor(false);
                 }}
-                onSave={async (data: NoteData) => {
+                onSave={async (data: INoteEditableData) => {
                     try {
+                        // @ts-ignore
                         const { data: returnedData, errors } = await client.models.Note.create(data);
                         if (errors) {
                             console.error("Error creating note:", errors);

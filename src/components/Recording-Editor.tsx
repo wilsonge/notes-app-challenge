@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Input, Label } from '@aws-amplify/ui-react';
 import { Dialog, DialogDismiss, DialogHeading } from "@ariakit/react";
 import { Formik } from "formik";
+import { INoteEditableData } from "../types.ts";
 
 const StyledButton = styled(DialogDismiss)`
   background-color: #74b49b;
@@ -57,16 +58,11 @@ const Title = styled(DialogHeading)`
   color: #74b49b;
 `;
 
-type NoteEditableData = {
-    title: string;
-    text: string;
-}
-
 type RecordingEditorProps = {
     onDismiss: () => void;
     title?: any;
     text: any;
-    onSave: (values: NoteEditableData) => Promise<void>;
+    onSave: (values: INoteEditableData) => Promise<void>;
     dialogOpen: boolean;
 }
 

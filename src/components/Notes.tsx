@@ -4,19 +4,9 @@ import styled from "@emotion/styled";
 import Note from "./Note";
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
+import { INoteEditableData } from "../types.ts";
 
 const client = generateClient<Schema>();
-
-type NoteEditableData = {
-    title: string;
-    text: string;
-}
-
-interface Note extends NoteEditableData {
-    id: string;
-    createdAt: string;
-    updatedAt: string;
-}
 
 const Container = styled("div")`
   max-width: 800px;
@@ -25,7 +15,7 @@ const Container = styled("div")`
 `;
 
 const NotesComponent = () => {
-    const [notes, setNotes] = useState<Note[]>([]);
+    const [notes, setNotes] = useState<Schema["Note"]["type"][]>([]);
 
     const fetchNotes: () => Promise<void> = async () => {
         const { data: items, errors } = await client.models.Note.list();
@@ -34,7 +24,6 @@ const NotesComponent = () => {
             console.log(errors);
             return;
         }
-        // @ts-ignore
         setNotes(items);
     };
 
@@ -45,11 +34,11 @@ const NotesComponent = () => {
     return (
         <Container>
             <h2>Here are your notes</h2>
-            {notes.map((note: Note) => (
+            {notes.map((note: Schema["Note"]["type"]) => (
                 <Note
                     key={note.id}
                     {...note}
-                    onSaveChanges={async (values: NoteEditableData) => {
+                    onSaveChanges={async (values: INoteEditableData) => {
                         if (values == null) {return}
                         // @ts-ignore
                         const { data: updatedNote, errors } =  await client.models.Note.update(values);
@@ -62,7 +51,6 @@ const NotesComponent = () => {
                             return;
                         }
                         setNotes(
-                            // @ts-ignore
                             notes.map(n => {
                                 return n.id === note.id ? updatedNote : n;
                             })

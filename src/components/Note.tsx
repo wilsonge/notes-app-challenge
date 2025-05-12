@@ -5,17 +5,7 @@ import { Predictions } from '@aws-amplify/predictions';
 import { Icon } from '@aws-amplify/ui-react';
 
 import RecordingEditor from "./Recording-Editor";
-
-type NoteEditableData = {
-    title: string;
-    text: string;
-}
-
-interface Note extends NoteEditableData {
-    id: string;
-    createdAt: string;
-    updatedAt: string;
-}
+import { INote, INoteEditableData } from "../types.ts";
 
 const Note = styled("div")`
   background-color: #ffffff;
@@ -75,10 +65,10 @@ const Info = styled.div`
 `;
 
 
-interface NoteComponentProps extends Note {
+interface NoteComponentProps extends INote {
     key?: string | undefined;
     onDelete: MouseEventHandler<SVGElement> | undefined;
-    onSaveChanges: (values: NoteEditableData) => Promise<void>;
+    onSaveChanges: (values: INoteEditableData) => Promise<void>;
 }
 
 const NotesComponent = (props: NoteComponentProps) => {

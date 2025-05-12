@@ -3,11 +3,11 @@ import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 const schema = a.schema({
     Note: a
         .model({
-            id: a.id(),
-            title: a.string(),
-            text: a.string(),
-            createdAt: a.string(),
-            updatedAt: a.string(),
+            id: a.id().required(),
+            title: a.string().required(),
+            text: a.string().required(),
+            createdAt: a.string().required(),
+            updatedAt: a.string().required(),
         })
         .authorization((allow) => [allow.publicApiKey()]),
 });
