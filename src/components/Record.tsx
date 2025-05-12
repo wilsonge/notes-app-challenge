@@ -41,7 +41,7 @@ const pulse = keyframes`
 interface AudioBufferUtil {
     reset: () => void;
     addData: (raw: Float32Array) => void;
-    getData: () => any[];
+    getData: () => Float32Array[];
 }
 
 const RecordComponent = () => {
@@ -91,16 +91,16 @@ const RecordComponent = () => {
         }
     };
 
-    // const pcmEncode = (input: Float32Array): ArrayBuffer => {
-    //     let offset = 0
-    //     const buffer = new ArrayBuffer(input.length * 2)
-    //     const view = new DataView(buffer)
-    //     for (let i = 0; i < input.length; i++, offset += 2) {
-    //         let s = Math.max(-1, Math.min(1, input[i]))
-    //         view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true)
-    //     }
-    //     return buffer
-    // }
+    const pcmEncode = (input: Float32Array): ArrayBuffer => {
+        let offset = 0
+        const buffer = new ArrayBuffer(input.length * 2)
+        const view = new DataView(buffer)
+        for (let i = 0; i < input.length; i++, offset += 2) {
+            let s = Math.max(-1, Math.min(1, input[i]))
+            view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true)
+        }
+        return buffer
+    }
 
     const stopRecording = async (): Promise<void> => {
         // If we have no mic stream nothing to stop. So we can safely abort.
@@ -113,20 +113,19 @@ const RecordComponent = () => {
         setIsConverting(true);
 
         const bufferList = audioBuffer.getData();
-        // let encodedAudio: ArrayBuffer[] = [];
-        //
-        // for (let i = 0; i < bufferList.length; i++) {
-        //     encodedAudio.push(pcmEncode(bufferList[i]));
-        // }
-        //
-        // const joinedUpAudio = await new Blob(encodedAudio).arrayBuffer();
+        let encodedAudio: ArrayBuffer[] = [];
+
+        for (let i = 0; i < bufferList.length; i++) {
+            encodedAudio.push(pcmEncode(bufferList[i]));
+        }
+
+        const joinedUpAudio = await new Blob(encodedAudio).arrayBuffer();
 
         try {
-            // @ts-ignore
             const result = await Predictions.convert({
                 transcription: {
                     source: {
-                        bytes: bufferList,
+                        bytes: joinedUpAudio,
                     },
                     language: 'en-US',
                 }
