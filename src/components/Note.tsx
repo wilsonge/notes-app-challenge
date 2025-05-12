@@ -116,13 +116,13 @@ const NotesComponent = (props: NoteComponentProps) => {
             <Divider />
             <NoteActions>
                 <ButtonIcon onClick={() => playAudio()}>
-                    <Icon viewBox={{width: 448, height: 512 }} as={FaPlay} />;
+                    <Icon viewBox={{width: 448, height: 512 }} as={FaPlay} />
                 </ButtonIcon>
                 <ButtonIcon onClick={() => setShowEditor(true)}>
-                    <Icon viewBox={{width: 448, height: 512 }} as={FaRegEdit} />;
+                    <Icon viewBox={{width: 576, height: 512 }} as={FaRegEdit} />
                 </ButtonIcon>
                 <ButtonIcon>
-                    <Icon viewBox={{width: 448, height: 512 }} as={FaRegTrashAlt} onClick={props.onDelete} />;
+                    <Icon viewBox={{width: 448, height: 512 }} as={FaRegTrashAlt} onClick={props.onDelete} />
                 </ButtonIcon>
             </NoteActions>
 
