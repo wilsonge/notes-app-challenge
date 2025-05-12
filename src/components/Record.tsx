@@ -127,14 +127,14 @@ const RecordComponent = () => {
                     source: {
                         bytes: joinedUpAudio,
                     },
-                    language: "en-GB",
+                    language: 'en-US',
                 }
             });
 
             setRecordingText(result.transcription.fullText);
             console.log(result.transcription.fullText);
         } catch (error: unknown) {
-            console.error("Error transcribing recording:", error);
+            console.error('Error transcribing recording:', error);
         }
 
         setMicStream(null);
