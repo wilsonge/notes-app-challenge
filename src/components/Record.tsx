@@ -192,8 +192,12 @@ const RecordComponent = () => {
                 }}
                 onSave={async (data: INoteEditableData) => {
                     try {
-                        // @ts-ignore
-                        const { data: returnedData, errors } = await client.models.Note.create(data);
+                        const fullNoteData = {
+                            ...data,
+                            'createdAt': Date.now().toString(),
+                            'updatedAt': Date.now().toString(),
+                        }
+                        const { data: returnedData, errors } = await client.models.Note.create(fullNoteData);
                         if (errors) {
                             console.error("Error creating note:", errors);
                         }

@@ -40,8 +40,12 @@ const NotesComponent = () => {
                     {...note}
                     onSaveChanges={async (values: INoteEditableData) => {
                         if (values == null) {return}
-                        // @ts-ignore
-                        const { data: updatedNote, errors } =  await client.models.Note.update(values);
+                        const updatedData = {
+                            ...note,
+                            ...values,
+                            'updatedAt': Date.now().toString(),
+                        }
+                        const { data: updatedNote, errors } =  await client.models.Note.update(updatedData);
                         // TODO: Better error handling
                         if (errors) {
                             return;
