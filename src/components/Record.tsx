@@ -136,12 +136,12 @@ const RecordComponent = () => {
         } catch (error: unknown) {
             console.error("Error transcribing recording:", error);
         }
-    }
 
-    setMicStream(null);
-    audioBuffer.reset();
-    setShowRecordingEditor(true);
-    setIsConverting(false);
+        setMicStream(null);
+        audioBuffer.reset();
+        setShowRecordingEditor(true);
+        setIsConverting(false);
+    };
 
     return (
         <Container>
