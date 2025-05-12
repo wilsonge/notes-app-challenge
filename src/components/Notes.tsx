@@ -46,15 +46,19 @@ const NotesComponent = () => {
                         }
                         const { data: updatedNote, errors } =  await client.models.Note.update(updatedData);
 
-                        // TODO: Better error handling
+                        // TODO: We should show parts of this to the user.
                         if (errors) {
+                            console.error(errors)
                             return;
                         }
 
-                        // TODO: Better error handling
+                        // TODO: Show an error to the user to indicate something went wrong. We could try using the
+                        //       data we wanted to upsert with in this case potentially.
                         if (updatedNote == null) {
+                            console.error('Failed to retrieve updated record from the update');
                             return;
                         }
+
                         setNotes(
                             notes.map(n => {
                                 return n.id === note.id ? updatedNote : n;
