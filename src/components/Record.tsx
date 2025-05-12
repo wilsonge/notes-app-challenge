@@ -40,8 +40,8 @@ const pulse = keyframes`
 // Define type for the audio buffer utility
 interface AudioBufferUtil {
     reset: () => void;
-    addData: (raw: Uint8Array) => void;
-    getData: () => Uint8Array[];
+    addData: (raw: Float32Array) => void;
+    getData: () => Float32Array[];
 }
 
 const RecordComponent = () => {
@@ -52,17 +52,17 @@ const RecordComponent = () => {
     const [micStream, setMicStream] = useState<MicrophoneStream | null>(null);
     const [audioBuffer] = useState<AudioBufferUtil>(
         (function(): AudioBufferUtil {
-            let buffer: Uint8Array[] = [];
+            let buffer: Float32Array[] = [];
 
             return {
                 reset: function(): void {
-                    console.log("resetting buffer");
+                    console.debug('resetting buffer');
                     buffer = [];
                 },
-                addData: function(chunk: Uint8Array): void {
+                addData: function(chunk: Float32Array): void {
                     buffer.push(chunk);
                 },
-                getData: function(): Uint8Array[] {
+                getData: function(): Float32Array[] {
                     return buffer
                 }
             };
@@ -79,8 +79,9 @@ const RecordComponent = () => {
             const startMic = new MicrophoneStream();
             startMic.setStream(stream);
 
-            startMic.on('data', (chunk: Uint8Array) => {
-                audioBuffer.addData(chunk);
+            startMic.on('data', (chunk: Buffer) => {
+                if (!chunk) return;
+                audioBuffer.addData(MicrophoneStream.toRaw(chunk));
             });
 
             setMicStream(startMic);
@@ -89,6 +90,17 @@ const RecordComponent = () => {
             console.error("Error starting recording:", error);
         }
     };
+
+    const pcmEncode = (input: Float32Array): ArrayBuffer => {
+        var offset = 0
+        var buffer = new ArrayBuffer(input.length * 2)
+        var view = new DataView(buffer)
+        for (var i = 0; i < input.length; i++, offset += 2) {
+            var s = Math.max(-1, Math.min(1, input[i]))
+            view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true)
+        }
+        return buffer
+    }
 
     const stopRecording = async (): Promise<void> => {
         // If we have no mic stream nothing to stop. So we can safely abort.
@@ -100,22 +112,27 @@ const RecordComponent = () => {
         setIsRecording(false);
         setIsConverting(true);
 
-        const buffer = audioBuffer.getData();
+        const bufferList = audioBuffer.getData();
+        let encodedAudio: ArrayBuffer;
 
-        try {
-            const result = await Predictions.convert({
-                transcription: {
-                    source: {
-                        bytes: Buffer.concat(buffer),
-                    },
-                }
-            });
+        for (let i = 0; i < bufferList.length; i++) {
+            encodedAudio = pcmEncode(bufferList[i]);
 
-            setRecordingText(result.transcription.fullText);
-            console.log(result.transcription.fullText);
-        }
-        catch (error: unknown) {
-            console.error("Error transcribing recording:", error);
+            try {
+                const result = await Predictions.convert({
+                    transcription: {
+                        source: {
+                            bytes: encodedAudio,
+                        },
+                        language: "en-GB",
+                    }
+                });
+
+                setRecordingText(result.transcription.fullText);
+                console.log(result.transcription.fullText);
+            } catch (error: unknown) {
+                console.error("Error transcribing recording:", error);
+            }
         }
 
         setMicStream(null);
