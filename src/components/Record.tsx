@@ -92,11 +92,11 @@ const RecordComponent = () => {
     };
 
     const pcmEncode = (input: Float32Array): ArrayBuffer => {
-        var offset = 0
-        var buffer = new ArrayBuffer(input.length * 2)
-        var view = new DataView(buffer)
-        for (var i = 0; i < input.length; i++, offset += 2) {
-            var s = Math.max(-1, Math.min(1, input[i]))
+        let offset = 0
+        const buffer = new ArrayBuffer(input.length * 2)
+        const view = new DataView(buffer)
+        for (let i = 0; i < input.length; i++, offset += 2) {
+            let s = Math.max(-1, Math.min(1, input[i]))
             view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true)
         }
         return buffer
@@ -113,33 +113,35 @@ const RecordComponent = () => {
         setIsConverting(true);
 
         const bufferList = audioBuffer.getData();
-        let encodedAudio: ArrayBuffer;
+        let encodedAudio: ArrayBuffer[] = [];
 
         for (let i = 0; i < bufferList.length; i++) {
-            encodedAudio = pcmEncode(bufferList[i]);
-
-            try {
-                const result = await Predictions.convert({
-                    transcription: {
-                        source: {
-                            bytes: encodedAudio,
-                        },
-                        language: "en-GB",
-                    }
-                });
-
-                setRecordingText(result.transcription.fullText);
-                console.log(result.transcription.fullText);
-            } catch (error: unknown) {
-                console.error("Error transcribing recording:", error);
-            }
+            encodedAudio.push(pcmEncode(bufferList[i]));
         }
 
-        setMicStream(null);
-        audioBuffer.reset();
-        setShowRecordingEditor(true);
-        setIsConverting(false);
-    };
+        const joinedUpAudio = await new Blob(encodedAudio).arrayBuffer();
+
+        try {
+            const result = await Predictions.convert({
+                transcription: {
+                    source: {
+                        bytes: joinedUpAudio,
+                    },
+                    language: "en-GB",
+                }
+            });
+
+            setRecordingText(result.transcription.fullText);
+            console.log(result.transcription.fullText);
+        } catch (error: unknown) {
+            console.error("Error transcribing recording:", error);
+        }
+    }
+
+    setMicStream(null);
+    audioBuffer.reset();
+    setShowRecordingEditor(true);
+    setIsConverting(false);
 
     return (
         <Container>
