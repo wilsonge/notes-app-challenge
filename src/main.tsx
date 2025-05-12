@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import { Authenticator } from '@aws-amplify/ui-react';
 import Screens from "./components/Screens.tsx";
 import "./index.css";
-import 'node_modules/modern-normalize/modern-normalize.css';
 import { Amplify } from "aws-amplify";
 import { parseAmplifyConfig } from "aws-amplify/utils";
 import outputs from "../amplify_outputs.json";
