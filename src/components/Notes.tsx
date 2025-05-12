@@ -33,7 +33,6 @@ const NotesComponent = () => {
 
     return (
         <Container>
-            <h2>Here are your notes</h2>
             {notes.map((note: Schema["Note"]["type"]) => (
                 <Note
                     key={note.id}
@@ -46,10 +45,12 @@ const NotesComponent = () => {
                             'updatedAt': Date.now().toString(),
                         }
                         const { data: updatedNote, errors } =  await client.models.Note.update(updatedData);
+
                         // TODO: Better error handling
                         if (errors) {
                             return;
                         }
+
                         // TODO: Better error handling
                         if (updatedNote == null) {
                             return;

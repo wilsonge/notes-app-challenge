@@ -91,6 +91,7 @@ const RecordComponent = () => {
     };
 
     const stopRecording = async (): Promise<void> => {
+        // If we have no mic stream nothing to stop. So we can safely abort.
         if (micStream == null) {
             return;
         }
