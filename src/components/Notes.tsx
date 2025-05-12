@@ -35,7 +35,6 @@ const NotesComponent = () => {
         <Container>
             {notes.map((note: Schema["Note"]["type"]) => (
                 <Note
-                    key={note.id}
                     {...note}
                     onSaveChanges={async (values: INoteEditableData) => {
                         if (values == null) {return}
