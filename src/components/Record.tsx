@@ -41,7 +41,7 @@ const pulse = keyframes`
 interface AudioBufferUtil {
     reset: () => void;
     addData: (raw: Float32Array) => void;
-    getData: () => Float32Array[];
+    getData: () => any[];
 }
 
 const RecordComponent = () => {
@@ -52,7 +52,7 @@ const RecordComponent = () => {
     const [micStream, setMicStream] = useState<MicrophoneStream | null>(null);
     const [audioBuffer] = useState<AudioBufferUtil>(
         (function(): AudioBufferUtil {
-            let buffer: Float32Array[] = [];
+            let buffer: any[] = [];
 
             return {
                 reset: function(): void {
@@ -60,9 +60,9 @@ const RecordComponent = () => {
                     buffer = [];
                 },
                 addData: function(chunk: Float32Array): void {
-                    buffer.push(chunk);
+                    buffer.concat(...chunk);
                 },
-                getData: function(): Float32Array[] {
+                getData: function(): any[] {
                     return buffer
                 }
             };
@@ -76,31 +76,31 @@ const RecordComponent = () => {
                 audio: true
             });
 
-            const startMic = new MicrophoneStream();
-            startMic.setStream(stream);
+            const micStreamObj = new MicrophoneStream();
+            micStreamObj.setStream(stream);
 
-            startMic.on('data', (chunk: Buffer) => {
+            micStreamObj.on('data', (chunk: Buffer): void => {
                 if (!chunk) return;
                 audioBuffer.addData(MicrophoneStream.toRaw(chunk));
             });
 
-            setMicStream(startMic);
+            setMicStream(micStreamObj);
             setIsRecording(true);
         } catch (error: unknown) {
             console.error("Error starting recording:", error);
         }
     };
 
-    const pcmEncode = (input: Float32Array): ArrayBuffer => {
-        let offset = 0
-        const buffer = new ArrayBuffer(input.length * 2)
-        const view = new DataView(buffer)
-        for (let i = 0; i < input.length; i++, offset += 2) {
-            let s = Math.max(-1, Math.min(1, input[i]))
-            view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true)
-        }
-        return buffer
-    }
+    // const pcmEncode = (input: Float32Array): ArrayBuffer => {
+    //     let offset = 0
+    //     const buffer = new ArrayBuffer(input.length * 2)
+    //     const view = new DataView(buffer)
+    //     for (let i = 0; i < input.length; i++, offset += 2) {
+    //         let s = Math.max(-1, Math.min(1, input[i]))
+    //         view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true)
+    //     }
+    //     return buffer
+    // }
 
     const stopRecording = async (): Promise<void> => {
         // If we have no mic stream nothing to stop. So we can safely abort.
@@ -113,19 +113,20 @@ const RecordComponent = () => {
         setIsConverting(true);
 
         const bufferList = audioBuffer.getData();
-        let encodedAudio: ArrayBuffer[] = [];
-
-        for (let i = 0; i < bufferList.length; i++) {
-            encodedAudio.push(pcmEncode(bufferList[i]));
-        }
-
-        const joinedUpAudio = await new Blob(encodedAudio).arrayBuffer();
+        // let encodedAudio: ArrayBuffer[] = [];
+        //
+        // for (let i = 0; i < bufferList.length; i++) {
+        //     encodedAudio.push(pcmEncode(bufferList[i]));
+        // }
+        //
+        // const joinedUpAudio = await new Blob(encodedAudio).arrayBuffer();
 
         try {
+            // @ts-ignore
             const result = await Predictions.convert({
                 transcription: {
                     source: {
-                        bytes: joinedUpAudio,
+                        bytes: bufferList,
                     },
                     language: 'en-US',
                 }
