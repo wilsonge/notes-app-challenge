@@ -12,6 +12,7 @@ import MicrophoneStream from "microphone-stream";
 import RecordingEditor from "./Recording-Editor";
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
+import { Icon } from "@aws-amplify/ui-react";
 
 const client = generateClient<Schema>();
 
@@ -182,20 +183,14 @@ const RecordComponent = () => {
                     }}
                 >
                     {isConverting ? (
-                        <FaMicrophoneAltSlash
-                            size={50}
-                            style={{ margin: "auto" }}
-                        />
+                        <Icon viewBox={{width: 640, height: 512 }} as={FaMicrophoneAltSlash}
+                              size={50} style={{ margin: "auto" }} />
                     ) : isRecording ? (
-                        <FaMicrophone
-                            size={50}
-                            style={{ margin: "auto" }}
-                        />
+                        <Icon viewBox={{width: 352, height: 512 }} as={FaMicrophone}
+                              size={50} style={{ margin: "auto" }} />
                     ) : (
-                        <FaMicrophoneAlt
-                            size={50}
-                            style={{ margin: "auto" }}
-                        />
+                        <Icon viewBox={{width: 352, height: 512 }} as={FaMicrophoneAlt}
+                              size={50} style={{ margin: "auto" }} />
                     )}
                 </div>
             </div>
