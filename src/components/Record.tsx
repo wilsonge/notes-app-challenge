@@ -99,14 +99,19 @@ const RecordComponent = () => {
     };
 
     const pcmEncode = (input: Float32Array): ArrayBuffer => {
-        let offset = 0
-        const buffer = new ArrayBuffer(input.length * 2)
-        const view = new DataView(buffer)
-        for (let i = 0; i < input.length; i++, offset += 2) {
-            let s = Math.max(-1, Math.min(1, input[i]))
-            view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true)
+        const int16Array = new Int16Array(float32Array.length);
+        for (let i = 0; i < float32Array.length; i++) {
+            int16Array[i] = Math.max(-32768, Math.min(32767, Math.floor(float32Array[i] * 32768)));
         }
-        return buffer
+        return int16Array.buffer;
+        // let offset = 0
+        // const buffer = new ArrayBuffer(input.length * 2)
+        // const view = new DataView(buffer)
+        // for (let i = 0; i < input.length; i++, offset += 2) {
+        //     let s = Math.max(-1, Math.min(1, input[i]))
+        //     view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true)
+        // }
+        // return buffer
     }
 
     const stopRecording = async (): Promise<void> => {
