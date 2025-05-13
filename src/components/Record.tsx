@@ -123,7 +123,7 @@ const RecordComponent = () => {
 
         if (bufferList.length === 0) {
             console.warn("No audio data collected");
-            throw new Error("No audio data was recorded");
+            return;
         }
 
         const totalLength = audioBuffer.getDataSize();
