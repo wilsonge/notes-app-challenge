@@ -99,9 +99,9 @@ const RecordComponent = () => {
     };
 
     const pcmEncode = (input: Float32Array): ArrayBuffer => {
-        const int16Array = new Int16Array(float32Array.length);
-        for (let i = 0; i < float32Array.length; i++) {
-            int16Array[i] = Math.max(-32768, Math.min(32767, Math.floor(float32Array[i] * 32768)));
+        const int16Array = new Int16Array(input.length);
+        for (let i = 0; i < input.length; i++) {
+            int16Array[i] = Math.max(-32768, Math.min(32767, Math.floor(input[i] * 32768)));
         }
         return int16Array.buffer;
         // let offset = 0
