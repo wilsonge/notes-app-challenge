@@ -42,6 +42,7 @@ interface AudioBufferUtil {
     reset: () => void;
     addData: (raw: Float32Array) => void;
     getData: () => Float32Array[];
+    getDataSize: () => number;
 }
 
 const RecordComponent = () => {
@@ -52,18 +53,24 @@ const RecordComponent = () => {
     const [micStream, setMicStream] = useState<MicrophoneStream | null>(null);
     const [audioBuffer] = useState<AudioBufferUtil>(
         (function(): AudioBufferUtil {
-            let buffer: any[] = [];
+            let buffer: Float32Array[] = [];
+            let totalSamples = 0;
 
             return {
                 reset: function(): void {
                     console.debug('resetting buffer');
                     buffer = [];
+                    totalSamples = 0;
                 },
                 addData: function(chunk: Float32Array): void {
-                    buffer.concat(...chunk);
+                    buffer.push(chunk);
+                    totalSamples += chunk.length;
                 },
-                getData: function(): any[] {
+                getData: function(): Float32Array[] {
                     return buffer
+                },
+                getDataSize: function(): number {
+                    return totalSamples;
                 }
             };
         })()
@@ -113,21 +120,41 @@ const RecordComponent = () => {
         setIsConverting(true);
 
         const bufferList = audioBuffer.getData();
-        let encodedAudio: ArrayBuffer[] = [];
 
-        for (let i = 0; i < bufferList.length; i++) {
-            encodedAudio.push(pcmEncode(bufferList[i]));
+        if (bufferList.length === 0) {
+            console.warn("No audio data collected");
+            throw new Error("No audio data was recorded");
         }
 
-        const joinedUpAudio = await new Blob(encodedAudio).arrayBuffer();
+        const totalLength = audioBuffer.getDataSize();
+        const concatenatedBuffer = new Float32Array(totalLength);
+
+        let offset = 0;
+        for (const buffer of bufferList) {
+            concatenatedBuffer.set(buffer, offset);
+            offset += buffer.length;
+        }
+
+        const pcmBuffer = pcmEncode(concatenatedBuffer)
+
+        console.log("Audio buffer prepared:", {
+            bufferCount: bufferList.length,
+            totalSamples: totalLength,
+            finalBufferBytes: pcmBuffer.byteLength
+        });
+
+        // Check if buffer is too small (likely means no audio was recorded)
+        if (pcmBuffer.byteLength < 4096) { // Arbitrary minimum size
+            console.warn("Audio buffer is very small, may not contain enough data for transcription");
+        }
 
         try {
             const result = await Predictions.convert({
                 transcription: {
                     source: {
-                        bytes: joinedUpAudio,
+                        bytes: pcmBuffer,
                     },
-                    language: 'en-US',
+                    language: 'en-GB',
                 }
             });
 
