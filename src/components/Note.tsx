@@ -7,29 +7,6 @@ import { Icon } from '@aws-amplify/ui-react';
 import RecordingEditor from "./Recording-Editor";
 import { INoteEditableData } from "../types.ts";
 
-const Note = styled("div")`
-  background-color: #ffffff;
-  border-radius: 4px;
-  margin-bottom: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(116, 180, 155, 0.2);
-`;
-
-const Title = styled("h2")`
-  color: #74b49b;
-  margin-top: 0;
-  margin-bottom: 8px;
-`;
-
-const Text = styled("p")`
-  color: #74b49b;
-  margin-top: 0;
-`;
-
 const ButtonIcon = styled("button")`
   padding: 8px 10px;
   display: inline-flex;
@@ -46,24 +23,6 @@ const ButtonIcon = styled("button")`
     background-color: #74b49b;
   }
 `;
-
-const Divider = styled("div")`
-  height: 2px;
-  background-color: #f4f9f4;
-`;
-
-const NoteActions = styled("div")`
-  display: flex;
-  justify-content: stretch;
-  align-items: stretch;
-  height: 50px;
-  background-color: #74b49b;
-`;
-
-const Info = styled.div`
-  padding: 24px;
-`;
-
 
 interface NoteComponentProps extends INoteEditableData {
     onDelete: MouseEventHandler<SVGElement> | undefined;
@@ -97,13 +56,13 @@ const NoteComponent = (props: NoteComponentProps) => {
     };
 
     return (
-        <Note>
-            <Info>
-                <Title>{props.title}</Title>
-                <Text>{props.text}</Text>
-            </Info>
-            <Divider />
-            <NoteActions>
+        <div className="background-white mb-6 flex flex-col justify-space-between align-items-stretch overflow-hidden rounded-sm shadow-sm tw-shadow-color-v1-teal">
+            <div className="p-6">
+                <h2 className="text-v1-teal mt-0 mb-2">{props.title}</h2>
+                <p className="text-v1-teal mt-0">{props.text}</p>
+            </div>
+            <div className="h-[2px] background-v1-putty" />
+            <div className="flex justify-stretch align-items-stretch h-[50px] background-v1-teal">
                 <ButtonIcon onClick={() => playAudio()}>
                     <Icon viewBox={{width: 448, height: 512 }} as={FaPlay} />
                 </ButtonIcon>
@@ -113,7 +72,7 @@ const NoteComponent = (props: NoteComponentProps) => {
                 <ButtonIcon>
                     <Icon viewBox={{width: 448, height: 512 }} as={FaRegTrashAlt} onClick={props.onDelete} />
                 </ButtonIcon>
-            </NoteActions>
+            </div>
 
             <RecordingEditor
                 dialogOpen={showEditor}
@@ -124,7 +83,7 @@ const NoteComponent = (props: NoteComponentProps) => {
                 }}
                 onSave={props.onSaveChanges}
             />
-        </Note>
+        </div>
     );
 };
 
