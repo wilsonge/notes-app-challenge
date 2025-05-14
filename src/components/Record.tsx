@@ -41,8 +41,7 @@ const pulse = keyframes`
 interface AudioBufferUtil {
     reset: () => void;
     addData: (raw: Float32Array) => void;
-    getData: () => number[];
-    getDataSize: () => number;
+    getData: () => Float32Array;
 }
 
 const RecordComponent = () => {
@@ -66,12 +65,9 @@ const RecordComponent = () => {
                     buffer = buffer.concat(...chunk);
                     totalSamples += chunk.length;
                 },
-                getData: function(): number[] {
-                    return buffer
+                getData: function(): Float32Array {
+                    return new Float32Array(buffer)
                 },
-                getDataSize: function(): number {
-                    return totalSamples;
-                }
             };
         })()
     );
@@ -98,22 +94,6 @@ const RecordComponent = () => {
         }
     };
 
-    // const pcmEncode = (input: Float32Array): ArrayBuffer => {
-    //     const int16Array = new Int16Array(input.length);
-    //     for (let i = 0; i < input.length; i++) {
-    //         int16Array[i] = Math.max(-32768, Math.min(32767, Math.floor(input[i] * 32768)));
-    //     }
-    //     return int16Array.buffer;
-    //     // let offset = 0
-    //     // const buffer = new ArrayBuffer(input.length * 2)
-    //     // const view = new DataView(buffer)
-    //     // for (let i = 0; i < input.length; i++, offset += 2) {
-    //     //     let s = Math.max(-1, Math.min(1, input[i]))
-    //     //     view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true)
-    //     // }
-    //     // return buffer
-    // }
-    //
     const stopRecording = async (): Promise<void> => {
         // If we have no mic stream nothing to stop. So we can safely abort.
         if (micStream == null) {
@@ -131,30 +111,7 @@ const RecordComponent = () => {
             return;
         }
 
-        const totalLength = audioBuffer.getDataSize();
-        // const concatenatedBuffer = new Float32Array(totalLength);
-        //
-        // let offset = 0;
-        // for (const buffer of bufferList) {
-        //     concatenatedBuffer.set(buffer, offset);
-        //     offset += buffer.length;
-        // }
-        //
-        // const pcmBuffer = pcmEncode(concatenatedBuffer)
-
-        console.log("Audio buffer prepared:", {
-            bufferCount: bufferList.length,
-            totalSamples: totalLength,
-            // finalBufferBytes: pcmBuffer.byteLength
-        });
-
-        // Check if buffer is too small (likely means no audio was recorded)
-        // if (pcmBuffer.byteLength < 4096) { // Arbitrary minimum size
-        //     console.warn("Audio buffer is very small, may not contain enough data for transcription");
-        // }
-
         try {
-            // @ts-ignore
             const result = await Predictions.convert({
                 transcription: {
                     source: {
