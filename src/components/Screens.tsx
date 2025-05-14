@@ -12,18 +12,6 @@ const Header = styled("div")`
   align-items: center;
 `;
 
-const Title = styled("h1")`
-  margin-top: 0;
-  margin-bottom: 0;
-  text-transform: uppercase;
-  color: var(--text-v1-teal);
-`;
-
-const SignOutButton = styled(Button)`
-  background-color: var(--bg-v1-teal);
-  cursor: pointer;
-`;
-
 const Screens = () => {
     const tab = useTabStore();
     const defaultSelectedId = "default-selected-tab";
@@ -35,11 +23,11 @@ const Screens = () => {
     return (
         <>
             <Header>
-                <Title>Quick Notes</Title>
-                <SignOutButton
+                <h1 className="text-v1-teal uppercase mb-0 mt-0">Quick Notes</h1>
+                <Button className="background-v1-teal"
                     onClick={handleSignOut}>
                     Sign Out
-                </SignOutButton>
+                </Button>
             </Header>
             <TabProvider defaultSelectedId={defaultSelectedId}>
                 <TabList className="tab-list" store={tab}>
