@@ -5,6 +5,8 @@
     --white: #ffffff;
 }
 
+@import "tailwindcss";
+
 /* Example tab styling */
 
 .tab-list {
