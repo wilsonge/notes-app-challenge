@@ -128,16 +128,8 @@ const RecordComponent = () => {
         <div className="flex flex-col items-center justify-around" css={css`margin: 16px auto;`}>
             <div className="relative justify-center items-center w-[120px] h-[120px]">
                 <div
-                    className="bg-v1-teal"
+                    className="absolute bg-v1-teal w-[100%] h-[100%] top-0 left-0 rounded-[50%]"
                     css={[
-                        css`
-                            width: 100%;
-                            height: 100%;
-                            top: 0;
-                            left: 0;
-                            position: absolute;
-                            border-radius: 50%;
-                        `,
                         isRecording || isConverting
                             ? css`
                                 animation: ${pulse} 1.5s ease infinite;
@@ -146,10 +138,7 @@ const RecordComponent = () => {
                     ]}
                 />
                 <div
-                    className="bg-v1-teal flex absolute cursor-pointer top-0 left-0 w-[100%] h-[100%]"
-                    css={css`
-                        border-radius: 50%;
-                    `}
+                    className="bg-v1-teal flex absolute cursor-pointer top-0 left-0 w-[100%] h-[100%] rounded-[50%]"
                     onClick={() => {
                         if (!isRecording) {
                             startRecording();
