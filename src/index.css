@@ -1,11 +1,10 @@
-:root {
-    --teal: #00c6c2;
-    --midnight: #052831;
-    --putty: #fdf7ea;
-    --white: #ffffff;
-}
-
 @import "tailwindcss";
+
+@theme {
+    --color-teal: #00c6c2;
+    --color-midnight: #052831;
+    --color-putty: #fdf7ea;
+}
 
 /* Example tab styling */
 
@@ -31,7 +30,7 @@
     text-decoration-line: none;
     outline-width: 2px;
     outline-offset: 2px;
-    outline-color: var(--teal);
+    outline-color: var(--text-teal);
 }
 
 .tab:hover {
@@ -43,13 +42,13 @@
 }
 
 .tab[aria-selected="true"] {
-    background-color: var(--teal);
+    background-color: var(--bg-teal);
     color: white;
 }
 
 .tab:hover[aria-selected="true"] {
     /* TODO: Should be a lighter version of our primary color teal */
-    background-color: var(--teal);
+    background-color: var(--bg-teal);
 }
 
 .tab[data-focus-visible] {
