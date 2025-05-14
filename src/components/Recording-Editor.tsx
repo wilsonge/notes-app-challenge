@@ -1,74 +1,18 @@
-import styled from "@emotion/styled";
-
-import { Input, Label } from '@aws-amplify/ui-react';
 import { Dialog, DialogDismiss, DialogHeading } from "@ariakit/react";
 import { Formik } from "formik";
 import { INoteEditableData } from "../types.ts";
 
-const StyledButton = styled(DialogDismiss)`
-  background-color: #74b49b;
-`;
-
-const StyledLabel = styled(Label)`
-  color: #74b49b;
-  margin-bottom: 4px;
-`;
-
-const StyledInput = styled(Input)`
-  color: #74b49b;
-  border-radius: 3px;
-  background-color: #f4f9f4;
-`;
-
-const StyledTextarea = styled.textarea`
-  color: #74b49b;
-  background-color: #f4f9f4;
-  width: 100%;
-  min-height: 80px;
-  border-radius: 3px;
-  resize: vertical;
-`;
-
-const FormInputs = styled.div`
-  max-height: 450px;
-  overflow: scroll;
-  padding: 16px;
-
-  @media (max-height: 570px) {
-    max-height: 300px;
-  }
-
-  @media (max-height: 675px) {
-    max-height: 350px;
-  }
-`;
-
-const Actions = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 24px;
-`;
-
-const InputContainer = styled.div`
-  margin-bottom: 16px;
-`;
-
-const Title = styled(DialogHeading)`
-  color: #74b49b;
-`;
-
 type RecordingEditorProps = {
     onDismiss: () => void;
-    title?: any;
-    text: any;
+    title?: string;
+    text: string;
     onSave: (values: INoteEditableData) => Promise<void>;
     dialogOpen: boolean;
 }
 
 const RecordingEditor = (props: RecordingEditorProps) => (
     <Dialog open={props.dialogOpen} onClose={() => props.onDismiss()} className="dialog">
-        <Title className="heading">{props.title ? "Edit Note" : "Create Note"}</Title>
+        <DialogHeading className="text-v1-teal heading">{props.title ? "Edit Note" : "Create Note"}</DialogHeading>
         <Formik
             initialValues={{
                 title: props.title || "",
@@ -86,42 +30,48 @@ const RecordingEditor = (props: RecordingEditorProps) => (
         >
             {({ values, handleSubmit, isSubmitting, handleChange }) => (
                 <form onSubmit={handleSubmit}>
-                    <FormInputs>
-                        <InputContainer>
-                            <StyledLabel htmlFor="title">Title</StyledLabel>
-                            <StyledInput
+                    <div className="overflow-scroll p-4 form-inputs">
+                        <div className="mb-4">
+                            <label className="text-v1-teal mb-1" htmlFor="noteTitle">Title</label>
+                            <input
                                 type="text"
                                 name="title"
+                                id="noteTitle"
                                 value={values.title}
                                 onChange={handleChange}
+                                className="text-v1-teal bg-v1-putty"
                             />
-                        </InputContainer>
+                        </div>
 
-                        <InputContainer>
-                            <StyledLabel htmlFor="text">Note</StyledLabel>
-                            <StyledTextarea
+                        <div className="mb-4">
+                            <label className="text-v1-teal mb-1" htmlFor="noteContents">Note</label>
+                            <textarea
                                 name="text"
+                                id="noteContents"
                                 value={values.text}
                                 onChange={handleChange}
+                                className="text-v1-teal bg-v1-putty resize-y w-full min-h-[80px]"
                             />
-                        </InputContainer>
-                    </FormInputs>
+                        </div>
+                    </div>
 
-                    <Actions>
-                        <StyledButton
+                    <div className="flex justify-end items-center mt-6">
+                        <DialogDismiss
                             onClick={() => {
                                 props.onDismiss();
                             }}
                             style={{ marginRight: "8px" }}
+                            className="me-2 bg-v1-teal"
                         >
                             Cancel
-                        </StyledButton>
-                        <StyledButton
+                        </DialogDismiss>
+                        <DialogDismiss
                             type="submit" disabled={isSubmitting}
+                            className="bg-v1-teal"
                         >
                             {isSubmitting ? "Saving..." : "Save"}
-                        </StyledButton>
-                    </Actions>
+                        </DialogDismiss>
+                    </div>
                 </form>
             )}
         </Formik>

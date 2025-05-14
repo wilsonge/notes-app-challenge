@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Predictions } from '@aws-amplify/predictions';
 import { keyframes, css } from "@emotion/core";
-import styled from "@emotion/styled";
 import {
     FaMicrophone,
     FaMicrophoneAlt,
@@ -16,14 +15,6 @@ import { Icon } from "@aws-amplify/ui-react";
 import { INoteEditableData } from "../types.ts"
 
 const client = generateClient<Schema>();
-
-const Container = styled("div")`
-  margin: 16px auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-`;
 
 const pulse = keyframes`
     0% {
@@ -134,17 +125,10 @@ const RecordComponent = () => {
     };
 
     return (
-        <Container>
-            <div
-                css={css`
-                    position: relative;
-                    justify-content: center;
-                    align-items: center;
-                    width: 120px;
-                    height: 120px;
-                `}
-            >
+        <div className="flex flex-col items-center justify-around" css={css`margin: 16px auto;`}>
+            <div className="relative justify-center items-center w-[120px] h-[120px]">
                 <div
+                    className="bg-v1-teal"
                     css={[
                         css`
                             width: 100%;
@@ -153,7 +137,6 @@ const RecordComponent = () => {
                             left: 0;
                             position: absolute;
                             border-radius: 50%;
-                            background-color: #74b49b;
                         `,
                         isRecording || isConverting
                             ? css`
@@ -163,16 +146,11 @@ const RecordComponent = () => {
                     ]}
                 />
                 <div
+                    className="bg-v1-teal flex absolute cursor-pointer top-0 left-0 w-100 h-100"
                     css={css`
                         width: 100%;
                         height: 100%;
-                        top: 0;
-                        left: 0;
-                        position: absolute;
                         border-radius: 50%;
-                        background-color: #74b49b;
-                        display: flex;
-                        cursor: pointer;
                     `}
                     onClick={() => {
                         if (!isRecording) {
@@ -220,7 +198,7 @@ const RecordComponent = () => {
                     }
                 }}
             />
-        </Container>
+        </div>
     );
 };
 

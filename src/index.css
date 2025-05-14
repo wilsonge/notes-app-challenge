@@ -97,3 +97,14 @@
     }
 }
 
+.form-inputs {
+    max-height: 450px;
+
+    @media (max-height: 570px) {
+        max-height: 300px;
+    }
+
+    @media (max-height: 675px) {
+        max-height: 350px;
+    }
+}
