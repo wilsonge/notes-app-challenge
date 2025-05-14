@@ -30,7 +30,7 @@
     text-decoration-line: none;
     outline-width: 2px;
     outline-offset: 2px;
-    outline-color: var(--text-v1-teal);
+    outline-color: var(--color-v1-teal);
 }
 
 .tab:hover {
@@ -42,13 +42,13 @@
 }
 
 .tab[aria-selected="true"] {
-    background-color: var(--bg-v1-teal);
+    background-color: var(--color-v1-teal);
     color: white;
 }
 
 .tab:hover[aria-selected="true"] {
     /* TODO: Should be a lighter version of our primary color teal */
-    background-color: var(--bg-v1-teal);
+    background-color: var(--color-v1-teal);
 }
 
 .tab[data-focus-visible] {

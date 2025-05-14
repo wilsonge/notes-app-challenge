@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import styled from "@emotion/styled";
 
 import Note from "./Note";
 import type { Schema } from "../../amplify/data/resource";
@@ -7,12 +6,6 @@ import { generateClient } from "aws-amplify/data";
 import { INoteEditableData } from "../types.ts";
 
 const client = generateClient<Schema>();
-
-const Container = styled("div")`
-  max-width: 800px;
-  margin: 16px auto;
-  width: 100%;
-`;
 
 const NotesComponent = () => {
     const [notes, setNotes] = useState<Schema["Note"]["type"][]>([]);
@@ -32,7 +25,7 @@ const NotesComponent = () => {
     }, []);
 
     return (
-        <Container>
+        <div className="max-w-[800px] w-[100%] my-4 mx-auto">
             {notes.map((note: Schema["Note"]["type"]) => (
                 <Note
                     {...note}
@@ -72,7 +65,7 @@ const NotesComponent = () => {
 
                 </Note>
             ))}
-        </Container>
+        </div>
     );
 };
 

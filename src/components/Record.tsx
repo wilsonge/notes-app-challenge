@@ -146,10 +146,8 @@ const RecordComponent = () => {
                     ]}
                 />
                 <div
-                    className="bg-v1-teal flex absolute cursor-pointer top-0 left-0 w-100 h-100"
+                    className="bg-v1-teal flex absolute cursor-pointer top-0 left-0 w-[100%] h-[100%]"
                     css={css`
-                        width: 100%;
-                        height: 100%;
                         border-radius: 50%;
                     `}
                     onClick={() => {

@@ -1,28 +1,10 @@
 import { MouseEventHandler, useState } from "react";
-import styled from "@emotion/styled";
 import { FaRegEdit, FaPlay, FaRegTrashAlt } from "react-icons/fa";
 import { Predictions } from '@aws-amplify/predictions';
 import { Icon } from '@aws-amplify/ui-react';
 
 import RecordingEditor from "./Recording-Editor";
 import { INoteEditableData } from "../types.ts";
-
-const ButtonIcon = styled("button")`
-  padding: 8px 10px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  color: #74b49b;
-  border: none;
-  cursor: pointer;
-  flex: 1;
-  background-color: #ffffff;
-
-  &:hover {
-    color: #ffffff;
-    background-color: #74b49b;
-  }
-`;
 
 interface NoteComponentProps extends INoteEditableData {
     onDelete: MouseEventHandler<SVGElement> | undefined;
@@ -63,15 +45,15 @@ const NoteComponent = (props: NoteComponentProps) => {
             </div>
             <div className="h-[2px] background-v1-putty" />
             <div className="flex justify-stretch align-items-stretch h-[50px] background-v1-teal">
-                <ButtonIcon onClick={() => playAudio()}>
+                <button className="inline-flex justify-center items-center text-v1-teal bg-white hover:bg-v1-teal hover:text-white border-0 flex-1 py-2 px-2.5" onClick={() => playAudio()}>
                     <Icon viewBox={{width: 448, height: 512 }} as={FaPlay} />
-                </ButtonIcon>
-                <ButtonIcon onClick={() => setShowEditor(true)}>
+                </button>
+                <button className="inline-flex justify-center items-center text-v1-teal bg-white hover:bg-v1-teal hover:text-white border-0 flex-1 py-2 px-2.5" onClick={() => setShowEditor(true)}>
                     <Icon viewBox={{width: 576, height: 512 }} as={FaRegEdit} />
-                </ButtonIcon>
-                <ButtonIcon>
+                </button>
+                <button className="inline-flex justify-center items-center text-v1-teal bg-white hover:bg-v1-teal hover:text-white border-0 flex-1 py-2 px-2.5">
                     <Icon viewBox={{width: 448, height: 512 }} as={FaRegTrashAlt} onClick={props.onDelete} />
-                </ButtonIcon>
+                </button>
             </div>
 
             <RecordingEditor
