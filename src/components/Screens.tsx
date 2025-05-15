@@ -23,11 +23,11 @@ const Screens = () => {
                 </Button>
             </div>
             <TabProvider defaultSelectedId={defaultSelectedId}>
-                <TabList className="tab-list" store={tab}>
+                <TabList className="flex gap-2" store={tab}>
                     <Tab className="tab" id={defaultSelectedId}>Notes</Tab>
                     <Tab className="tab">Record</Tab>
                 </TabList>
-                <div className="panels">
+                <div className="p-2">
                     <TabPanel store={tab} tabId={defaultSelectedId}>
                         <Notes />
                     </TabPanel>

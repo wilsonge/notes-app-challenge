@@ -11,7 +11,7 @@ type RecordingEditorProps = {
 }
 
 const RecordingEditor = (props: RecordingEditorProps) => (
-    <Dialog open={props.dialogOpen} onClose={() => props.onDismiss()} className="dialog">
+    <Dialog open={props.dialogOpen} onClose={() => props.onDismiss()} className="dialog fixed z-50 m-auto flex flex-col gap-4 overflow-auto bg-white text-black p-4 h-fit">
         <DialogHeading className="text-v1-teal heading">{props.title ? "Edit Note" : "Create Note"}</DialogHeading>
         <Formik
             initialValues={{
