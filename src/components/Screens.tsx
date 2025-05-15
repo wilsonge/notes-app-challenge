@@ -16,7 +16,7 @@ const Screens = () => {
     return (
         <>
             <div className="flex items-center justify-between">
-                <h1 className="text-v1-teal uppercase mb-0 mt-0">Quick Notes</h1>
+                <h1 className="text-v1-teal uppercase mb-0 mt-0 text-4xl">Quick Notes</h1>
                 <Button className="bg-v1-teal"
                     onClick={handleSignOut}>
                     Sign Out
