@@ -139,11 +139,11 @@ const RecordComponent = () => {
                 />
                 <div
                     className="bg-v1-teal flex absolute cursor-pointer top-0 left-0 w-[100%] h-[100%] rounded-[50%]"
-                    onClick={() => {
+                    onClick={async() => {
                         if (!isRecording) {
-                            startRecording();
+                            await startRecording();
                         } else {
-                            stopRecording();
+                            await stopRecording();
                         }
                     }}
                 >
