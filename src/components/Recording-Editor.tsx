@@ -60,7 +60,6 @@ const RecordingEditor = (props: RecordingEditorProps) => (
                             onClick={() => {
                                 props.onDismiss();
                             }}
-                            style={{ marginRight: "8px" }}
                             className="me-2 bg-v1-teal"
                         >
                             Cancel
