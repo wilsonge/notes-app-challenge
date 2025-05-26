@@ -46,7 +46,7 @@ const NoteComponent: FC<NoteComponentProps> = (props: NoteComponentProps) => {
                     <p className="text-v1-teal mt-0">{props.text}</p>
                 </div>
                 <div className="h-[2px] background-v1-putty" />
-                <div className="flex justify-stretch align-items-stretch h-[50px] background-v1-teal">
+                <div className="flex justify-stretch align-items-stretch h-[50px] background-v1-teal border-gray-100 border-solid border-t-[1px]">
                     <button className="inline-flex justify-center items-center text-v1-teal bg-white hover:bg-v1-teal hover:text-white border-0 flex-1 py-2 px-2.5" onClick={() => playAudio()}>
                         <Icon viewBox={{width: 448, height: 512 }} as={FaPlay} />
                     </button>

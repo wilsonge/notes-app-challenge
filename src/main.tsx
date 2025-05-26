@@ -25,8 +25,10 @@ window.Buffer = Buffer;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <Authenticator>
-            <Screens />
-        </Authenticator>
+        <div className="container mx-auto">
+            <Authenticator>
+                <Screens />
+            </Authenticator>
+        </div>
     </React.StrictMode>
 );
