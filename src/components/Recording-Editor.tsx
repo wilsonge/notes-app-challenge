@@ -13,7 +13,7 @@ type RecordingEditorProps = {
 
 const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) => (
     <Dialog open={props.dialogOpen} onClose={() => props.onDismiss()} className="dialog fixed z-50 m-auto flex flex-col gap-4 overflow-auto bg-white text-black p-4 h-fit">
-        <DialogHeading className="text-v1-teal heading">{props.title ? "Edit Note" : "Create Note"}</DialogHeading>
+        <DialogHeading className="text-v1-teal heading text-2xl">{props.title ? "Edit Note" : "Create Note"}</DialogHeading>
         <Formik
             initialValues={{
                 title: props.title || "",
