@@ -1,11 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { Authenticator } from '@aws-amplify/ui-react';
-import Screens from "./components/Screens.tsx";
-import "./index.css";
-import { Amplify } from "aws-amplify";
-import { parseAmplifyConfig } from "aws-amplify/utils";
+import Screens from './components/Screens.tsx';
+
+import { Amplify } from 'aws-amplify';
+import { parseAmplifyConfig } from 'aws-amplify/utils';
 import outputs from "../amplify_outputs.json";
+
+import '@aws-amplify/ui-react/styles.css';
+import "./index.css";
 
 const amplifyConfig = parseAmplifyConfig(outputs);
 
