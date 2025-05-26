@@ -1,11 +1,12 @@
 import { Button } from '@aws-amplify/ui-react';
 import { signOut } from 'aws-amplify/auth';
+import { FC } from "react";
 import { TabProvider, TabList, Tab, TabPanel, useTabStore } from "@ariakit/react";
 
 import Notes from "./Notes";
 import Record from "./Record";
 
-const Screens = () => {
+const Screens: FC = () => {
     const tab = useTabStore();
     const defaultSelectedId = "default-selected-tab";
 

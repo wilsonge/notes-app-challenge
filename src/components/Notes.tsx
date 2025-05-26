@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 
 import Note from "./Note";
 import type { Schema } from "../../amplify/data/resource";
@@ -7,7 +7,7 @@ import { INoteEditableData } from "../types.ts";
 
 const client = generateClient<Schema>();
 
-const NotesComponent = () => {
+const NotesComponent: FC = () => {
     const [notes, setNotes] = useState<Schema["Note"]["type"][]>([]);
 
     const fetchNotes: () => Promise<void> = async () => {

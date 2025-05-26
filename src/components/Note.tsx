@@ -1,4 +1,4 @@
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useState, FC } from "react";
 import { FaRegEdit, FaPlay, FaRegTrashAlt } from "react-icons/fa";
 import { Predictions } from '@aws-amplify/predictions';
 import { Icon } from '@aws-amplify/ui-react';
@@ -11,7 +11,7 @@ interface NoteComponentProps extends INoteEditableData {
     onSaveChanges: (values: INoteEditableData) => Promise<void>;
 }
 
-const NoteComponent = (props: NoteComponentProps) => {
+const NoteComponent: FC<NoteComponentProps> = (props: NoteComponentProps) => {
     const [showEditor, setShowEditor] = useState(false);
 
     const playAudio = async () => {

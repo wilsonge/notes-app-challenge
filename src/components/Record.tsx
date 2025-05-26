@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {FC, useState} from "react";
 import { Predictions } from '@aws-amplify/predictions';
 import { keyframes, css } from "@emotion/core";
 import {
@@ -35,7 +35,7 @@ interface AudioBufferUtil {
     getData: () => Float32Array;
 }
 
-const RecordComponent = () => {
+const RecordComponent: FC = () => {
     const [isRecording, setIsRecording] = useState<boolean>(false);
     const [showRecordingEditor, setShowRecordingEditor] = useState<boolean>(false);
     const [recordingText, setRecordingText] = useState<string>("");

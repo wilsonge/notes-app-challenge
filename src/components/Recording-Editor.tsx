@@ -1,6 +1,7 @@
 import { Dialog, DialogDismiss, DialogHeading } from "@ariakit/react";
 import { Formik } from "formik";
 import { INoteEditableData } from "../types.ts";
+import { FC } from "react";
 
 type RecordingEditorProps = {
     onDismiss: () => void;
@@ -10,7 +11,7 @@ type RecordingEditorProps = {
     dialogOpen: boolean;
 }
 
-const RecordingEditor = (props: RecordingEditorProps) => (
+const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) => (
     <Dialog open={props.dialogOpen} onClose={() => props.onDismiss()} className="dialog fixed z-50 m-auto flex flex-col gap-4 overflow-auto bg-white text-black p-4 h-fit">
         <DialogHeading className="text-v1-teal heading">{props.title ? "Edit Note" : "Create Note"}</DialogHeading>
         <Formik
