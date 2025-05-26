@@ -61,13 +61,13 @@ const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) 
                             onClick={() => {
                                 props.onDismiss();
                             }}
-                            className="me-2 bg-v1-teal"
+                            className="me-2 bg-v1-teal p-2 text-white"
                         >
                             Cancel
                         </DialogDismiss>
                         <DialogDismiss
                             type="submit" disabled={isSubmitting}
-                            className="bg-v1-teal"
+                            className="bg-v1-teal p-2 text-white"
                         >
                             {isSubmitting ? "Saving..." : "Save"}
                         </DialogDismiss>
