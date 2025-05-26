@@ -40,13 +40,13 @@
 .tab[aria-selected="true"] {
     /*background-color: var(--color-v1-teal);*/
     /*color: white;*/
-    border: 2px solid var(--color-v1-teal);
+    border-bottom: 2px solid var(--color-v1-teal);
     color: var(--color-v1-teal);
 }
 
 .tab:hover[aria-selected="true"] {
     /* TODO: Should be a lighter version of our primary color teal */
-    background-color: var(--color-v1-teal);
+    /*background-color: var(--color-v1-teal);*/
 }
 
 .tab[data-focus-visible] {
