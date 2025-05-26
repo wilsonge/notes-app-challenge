@@ -37,8 +37,10 @@
 }
 
 .tab[aria-selected="true"] {
-    background-color: var(--color-v1-teal);
-    color: white;
+    /*background-color: var(--color-v1-teal);*/
+    /*color: white;*/
+    border: 2px solid var(--color-v1-teal);
+    color: var(--color-v1-teal);
 }
 
 .tab:hover[aria-selected="true"] {
