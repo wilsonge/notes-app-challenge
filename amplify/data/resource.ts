@@ -13,7 +13,7 @@ const schema = a.schema({
         .authorization((allow) => [allow.publicApiKey()]),
 
     summarize: a.generation({
-        aiModel: a.ai.model('Claude 3.5 Haiku'),
+        aiModel: a.ai.model('Claude 3 Haiku'),
         systemPrompt: 'Provide an accurate, clear, and concise summary of the input provided'
     })
         .arguments({ text: a.string() })
