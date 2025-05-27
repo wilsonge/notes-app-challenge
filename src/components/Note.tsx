@@ -67,7 +67,7 @@ const NoteComponent: FC<NoteComponentProps> = (props: NoteComponentProps) => {
                 <div className="p-6">
                     <Heading className="text-v1-teal mt-0 mb-2 text-xl">{props.title}</Heading>
                     <p className="text-v1-midnight mt-0"><span className="font-bold">Summary:</span> {props.summary}</p>
-                    <p ref={ref} className={`break-words text-xl text-v1-midnight mt-0 ${!isReadingMore && 'line-clamp-3'}`}>
+                    <p ref={ref} className={`break-words text-v1-midnight mt-0 ${!isReadingMore && 'line-clamp-3'}`}>
                         <span className="font-bold">Note:</span> {props.text}
                     </p>
                     {isTruncated && !isReadingMore && (
