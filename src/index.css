@@ -77,7 +77,15 @@
     --inset: 0.75rem;
 }
 
-@media (min-width: 640px) {
+/* XL screens and higher */
+@media (min-width: 80rem) {
+    .dialog {
+        width: 1000px;
+    }
+}
+
+/* Small screens and higher */
+@media (min-width: 40rem) {
     .dialog {
         top: 10vh;
         bottom: 10vh;
