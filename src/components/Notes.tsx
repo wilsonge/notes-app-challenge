@@ -38,7 +38,7 @@ const NotesComponent: FC = () => {
                             return;
                         }
 
-                        if (!summary) {
+                        if (!summary || !summary.summary) {
                             console.error('Failed to find a summary');
                             return;
                         }
@@ -47,7 +47,7 @@ const NotesComponent: FC = () => {
                             ...note,
                             ...values,
                             'updatedAt': Date.now().toString(),
-                            summary,
+                            'summary': summary.summary,
                         }
                         const { data: updatedNote, errors } =  await client.models.Note.update(updatedData);
 

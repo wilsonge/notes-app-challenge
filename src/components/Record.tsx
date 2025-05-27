@@ -150,17 +150,17 @@ const RecordComponent: FC = () => {
                             return;
                         }
 
-                        if (!summary) {
+                        if (!summary || !summary.summary) {
                             console.error('Failed to find a summary');
                             return;
                         }
-                        console.log(summary);
+                        console.log(summary.summary);
 
                         const fullNoteData = {
                             ...data,
                             'createdAt': Date.now().toString(),
                             'updatedAt': Date.now().toString(),
-                            'summary': summary,
+                            'summary': summary.summary,
                         }
                         const { data: returnedData, errors } = await client.models.Note.create(fullNoteData);
                         if (errors) {

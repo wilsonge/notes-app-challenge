@@ -12,13 +12,28 @@ const schema = a.schema({
         })
         .authorization((allow) => [allow.publicApiKey()]),
 
-    summarize: a.generation({
-        aiModel: a.ai.model('Claude 3 Sonnet'),
-        systemPrompt: 'Provide an accurate, clear, and concise summary of the text provided with a length of between 2 and 3 sentences. Make sure to include all relevant details in your summary and analysis.'
-    })
-        .arguments({ text: a.string() })
-        .returns(a.string())
-        .authorization((allow) => allow.publicApiKey()),
+    summarize: a
+        .generation({
+            aiModel: a.ai.model("Claude 3 Sonnet"),
+            systemPrompt:
+                "You are a helpful assistant that summarizes notes. " +
+                "Give a concise summary of the supplied note. " +
+                "The summary should be one or two sentences long",
+            inferenceConfiguration: {
+                temperature: 0.7,
+                topP: 1,
+                maxTokens: 600,
+            },
+        })
+        .arguments({
+            text: a.string(),
+        })
+        .returns(
+            a.customType({
+                summary: a.string(),
+            })
+        )
+        .authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
