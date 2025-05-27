@@ -18,7 +18,7 @@ const schema = a.schema({
     })
         .arguments({ text: a.string() })
         .returns(a.string())
-        .authorization((allow) => allow.authenticated()),
+        .authorization((allow) => allow.publicApiKey()),
 });
 
 export type Schema = ClientSchema<typeof schema>;
