@@ -33,14 +33,14 @@ const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) 
                 <form onSubmit={handleSubmit}>
                     <div className="overflow-scroll p-4 form-inputs">
                         <div className="mb-4">
-                            <label className="text-v1-teal mb-1" htmlFor="noteTitle">Title</label>
+                            <label className="text-v1-teal mb-1 mr-2" htmlFor="noteTitle">Title</label>
                             <input
                                 type="text"
                                 name="title"
                                 id="noteTitle"
                                 value={values.title}
                                 onChange={handleChange}
-                                className="text-v1-teal bg-v1-putty"
+                                className="text-v1-midnight bg-v1-putty"
                             />
                         </div>
 
@@ -51,7 +51,7 @@ const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) 
                                 id="noteContents"
                                 value={values.text}
                                 onChange={handleChange}
-                                className="text-v1-teal bg-v1-putty resize-y w-full min-h-[80px]"
+                                className="text-v1-midnight bg-v1-putty resize-y w-full min-h-[80px]"
                             />
                         </div>
                     </div>

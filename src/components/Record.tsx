@@ -129,10 +129,11 @@ const RecordComponent: FC = () => {
                         <Icon viewBox={{width: 352, height: 512 }} as={FaMicrophone}
                               size={50} style={{ margin: "auto" }} />
                     ) : (
-                        <Icon viewBox={{width: 352, height: 512 }} as={FaMicrophoneAlt}
+                        <Icon width={200} viewBox={{width: 352, height: 512 }} as={FaMicrophoneAlt}
                               size={50} style={{ margin: "auto" }} />
                     )}
                 </div>
+                <p>Click the icon to record a audio segment for the Note</p>
             </div>
             <RecordingEditor
                 dialogOpen={showRecordingEditor}
