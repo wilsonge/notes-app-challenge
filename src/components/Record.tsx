@@ -154,6 +154,7 @@ const RecordComponent: FC = () => {
                             console.error('Failed to find a summary');
                             return;
                         }
+                        console.log(summary);
 
                         const fullNoteData = {
                             ...data,
@@ -164,6 +165,7 @@ const RecordComponent: FC = () => {
                         const { data: returnedData, errors } = await client.models.Note.create(fullNoteData);
                         if (errors) {
                             console.error("Error creating note:", errors);
+                            return;
                         }
                         console.debug(returnedData);
                         document.getElementById('notes-tab')?.click();
