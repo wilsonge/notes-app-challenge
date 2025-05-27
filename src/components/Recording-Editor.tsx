@@ -31,7 +31,7 @@ const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) 
         >
             {({ values, handleSubmit, isSubmitting, handleChange }) => (
                 <form onSubmit={handleSubmit}>
-                    <div className="overflow-scroll p-4 form-inputs">
+                    <div className="overflow-scroll p-4 form-inputs max-h-[450px] sm:max-h-[300px]">
                         <div className="mb-4">
                             <label className="text-v1-teal mb-1 mr-2" htmlFor="noteTitle">Title</label>
                             <input

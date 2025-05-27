@@ -19,8 +19,7 @@
     }
 }
 
-/* Example tab styling */
-
+/* Tab styling */
 .tab {
     display: flex;
     height: 2.5rem;
@@ -47,8 +46,6 @@
 }
 
 .tab[aria-selected="true"] {
-    /*background-color: var(--color-v1-teal);*/
-    /*color: white;*/
     border-bottom: 2px solid var(--color-v1-teal);
     color: var(--color-v1-teal);
 }
@@ -56,6 +53,7 @@
 .tab:hover[aria-selected="true"] {
     /* TODO: Should be a lighter version of our primary color teal */
     /*background-color: var(--color-v1-teal);*/
+    color: #fff;
 }
 
 .tab[data-focus-visible] {
@@ -67,7 +65,11 @@
     padding-top: 0.125rem;
 }
 
-/* Example dialog styling */
+/* Dialog styling */
+[data-backdrop] {
+    /* Tailwind's bg-gray-300 */
+    background-color: oklch(87.2% .01 258.338)
+}
 
 .dialog {
     inset: var(--inset);
@@ -94,17 +96,5 @@
 @media (min-width: 80rem) {
     .dialog {
         width: 1000px;
-    }
-}
-
-.form-inputs {
-    max-height: 450px;
-
-    @media (max-height: 570px) {
-        max-height: 300px;
-    }
-
-    @media (max-height: 675px) {
-        max-height: 350px;
     }
 }
