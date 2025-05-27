@@ -9,7 +9,6 @@ import Record from "./Record";
 
 const Screens: FC = () => {
     const tab = useTabStore();
-    const defaultSelectedId = "default-selected-tab";
 
     async function handleSignOut() {
         await signOut()
@@ -25,16 +24,16 @@ const Screens: FC = () => {
                         Sign Out
                     </Button>
                 </div>
-                <TabProvider defaultSelectedId={defaultSelectedId}>
+                <TabProvider defaultSelectedId="notes-tab">
                     <TabList className="flex gap-2" store={tab}>
-                        <Tab className="tab" id={defaultSelectedId}>Notes</Tab>
-                        <Tab className="tab">Record</Tab>
+                        <Tab className="tab" id="notes-tab">Notes</Tab>
+                        <Tab className="tab" id="record-tab">Record</Tab>
                     </TabList>
                     <div className="p-2">
-                        <TabPanel store={tab} tabId={defaultSelectedId}>
+                        <TabPanel store={tab} tabId="notes-tab">
                             <Notes />
                         </TabPanel>
-                        <TabPanel store={tab}>
+                        <TabPanel store={tab} tabId="record-tab">
                             <Record />
                         </TabPanel>
                     </div>

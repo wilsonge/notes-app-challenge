@@ -2,10 +2,8 @@ import { useState, useEffect, FC } from "react";
 
 import Note from "./Note";
 import type { Schema } from "../../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
+import { client } from "../client.ts";
 import { INoteEditableData } from "../types.ts";
-
-const client = generateClient<Schema>();
 
 const NotesComponent: FC = () => {
     const [notes, setNotes] = useState<Schema["Note"]["type"][]>([]);
@@ -31,10 +29,25 @@ const NotesComponent: FC = () => {
                     {...note}
                     onSaveChanges={async (values: INoteEditableData) => {
                         if (values == null) {return}
+
+                        const { data: summary, errors: ai_errors } = await client.generations
+                            .summarize({text: values.text})
+
+                        if (ai_errors) {
+                            console.error("Error creating note:", ai_errors);
+                            return;
+                        }
+
+                        if (!summary) {
+                            console.error('Failed to find a summary');
+                            return;
+                        }
+
                         const updatedData = {
                             ...note,
                             ...values,
                             'updatedAt': Date.now().toString(),
+                            summary,
                         }
                         const { data: updatedNote, errors } =  await client.models.Note.update(updatedData);
 

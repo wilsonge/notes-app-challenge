@@ -8,12 +8,9 @@ import {
 import MicrophoneStream from "microphone-stream";
 
 import RecordingEditor from "./Recording-Editor";
-import type { Schema } from "../../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
+import { client } from "../client.ts";
 import { Icon } from "@aws-amplify/ui-react";
 import { INoteEditableData } from "../types.ts"
-
-const client = generateClient<Schema>();
 
 // Define type for the audio buffer utility
 interface AudioBufferUtil {
@@ -145,19 +142,31 @@ const RecordComponent: FC = () => {
                 }}
                 onSave={async (data: INoteEditableData) => {
                     try {
+                        const { data: summary, errors: ai_errors } = await client.generations
+                            .summarize({text: data.text})
+
+                        if (ai_errors) {
+                            console.error("Error creating note:", ai_errors);
+                            return;
+                        }
+
+                        if (!summary) {
+                            console.error('Failed to find a summary');
+                            return;
+                        }
+
                         const fullNoteData = {
                             ...data,
                             'createdAt': Date.now().toString(),
                             'updatedAt': Date.now().toString(),
+                            summary,
                         }
                         const { data: returnedData, errors } = await client.models.Note.create(fullNoteData);
                         if (errors) {
                             console.error("Error creating note:", errors);
                         }
-                        console.log(returnedData);
-                        // TODO: This would reset the screen tab back from "Record" to "Notes". Currently no longer works
-                        // with the migration to the new Tabs UI
-                        // props.setTabIndex(0);
+                        console.debug(returnedData);
+                        document.getElementById('notes-tab')?.click();
                     } catch (error) {
                         console.error("Error saving note:", error);
                     }
