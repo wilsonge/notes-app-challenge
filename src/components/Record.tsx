@@ -1,6 +1,5 @@
 import {FC, useState} from "react";
 import { Predictions } from '@aws-amplify/predictions';
-import { keyframes, css } from "@emotion/core";
 import {
     FaMicrophone,
     FaMicrophoneAlt,
@@ -15,18 +14,6 @@ import { Icon } from "@aws-amplify/ui-react";
 import { INoteEditableData } from "../types.ts"
 
 const client = generateClient<Schema>();
-
-const pulse = keyframes`
-    0% {
-        transform: scale(1);
-        opacity: 0.3;
-    }
-
-    100% {
-        transform: scale(2);
-        opacity: 0;
-    }
-`;
 
 // Define type for the audio buffer utility
 interface AudioBufferUtil {
@@ -125,18 +112,9 @@ const RecordComponent: FC = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-around" css={css`margin: 16px auto;`}>
+        <div className="flex flex-col items-center justify-around my-auto mx-4">
             <div className="relative justify-center items-center w-[120px] h-[120px]">
-                <div
-                    className="absolute bg-v1-teal w-[100%] h-[100%] top-0 left-0 rounded-[50%]"
-                    css={[
-                        isRecording || isConverting
-                            ? css`
-                                animation: ${pulse} 1.5s ease infinite;
-                            `
-                            : {}
-                    ]}
-                />
+                <div className={'absolute bg-v1-teal w-[100%] h-[100%] top-0 left-0 rounded-[50%] ' + (isRecording || isConverting) ? 'animate-modern-pulse' : ''} />
                 <div
                     className="bg-v1-teal flex absolute cursor-pointer top-0 left-0 w-[100%] h-[100%] rounded-[50%]"
                     onClick={async() => {
