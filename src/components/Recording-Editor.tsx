@@ -2,10 +2,12 @@ import { Dialog, DialogDismiss, DialogHeading } from "@ariakit/react";
 import { Formik } from "formik";
 import { INoteEditableData } from "../types.ts";
 import { FC } from "react";
+import { Alert } from "@aws-amplify/ui-react";
 
 type RecordingEditorProps = {
     onDismiss: () => void;
     title?: string;
+    error?: string;
     text: string;
     onSave: (values: INoteEditableData) => Promise<void>;
     dialogOpen: boolean;
@@ -14,6 +16,13 @@ type RecordingEditorProps = {
 const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) => (
     <Dialog open={props.dialogOpen} onClose={() => props.onDismiss()} className="dialog fixed z-50 m-auto flex flex-col gap-4 overflow-auto bg-white text-black p-4 h-fit">
         <DialogHeading className="text-v1-teal heading text-2xl">{props.title ? "Edit Note" : "Create Note"}</DialogHeading>
+        {props.error && props.error !== '' ? <Alert
+            isDismissible={true}
+            hasIcon={true}
+            heading="Error"
+        >
+            props.error
+        </Alert> : ''}
         <Formik
             initialValues={{
                 title: props.title || "",

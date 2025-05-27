@@ -1,4 +1,4 @@
-import {FC, useState} from "react";
+import { FC, useState } from "react";
 import { Predictions } from '@aws-amplify/predictions';
 import {
     FaMicrophone,
@@ -22,6 +22,7 @@ interface AudioBufferUtil {
 const RecordComponent: FC = () => {
     const [isRecording, setIsRecording] = useState<boolean>(false);
     const [showRecordingEditor, setShowRecordingEditor] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
     const [recordingText, setRecordingText] = useState<string>("");
     const [isConverting, setIsConverting] = useState<boolean>(false);
     const [micStream, setMicStream] = useState<MicrophoneStream | null>(null);
@@ -96,10 +97,21 @@ const RecordComponent: FC = () => {
                 }
             });
 
+            if (result.transcription.fullText === '') {
+                setError('AWS Transcribe failed to parse your audio into text')
+            }
+
             setRecordingText(result.transcription.fullText);
-            console.log(result.transcription.fullText);
-        } catch (error: unknown) {
-            console.error('Error transcribing recording:', error);
+        } catch (transcribeException: unknown) {
+            console.error(transcribeException);
+
+            let userTranscribeError = 'AWS Transcribe failed to parse your audio into text'
+
+            if (transcribeException instanceof Error) {
+                userTranscribeError += transcribeException.message
+            }
+
+            setError(userTranscribeError)
         }
 
         setMicStream(null);
@@ -141,6 +153,7 @@ const RecordComponent: FC = () => {
                 onDismiss={() => {
                     setShowRecordingEditor(false);
                 }}
+                error={error}
                 onSave={async (data: INoteEditableData) => {
                     try {
                         const { data: summary, errors: ai_errors } = await client.generations
