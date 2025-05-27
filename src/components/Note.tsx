@@ -71,7 +71,7 @@ const NoteComponent: FC<NoteComponentProps> = (props: NoteComponentProps) => {
                         <span className="font-bold">Note:</span> {props.text}
                     </p>
                     {isTruncated && !isReadingMore && (
-                        <button onClick={() => setIsReadingMore(true)}>
+                        <button className="text-gray-400 italic" onClick={() => setIsReadingMore(true)}>
                             Read more
                         </button>
                     )}
