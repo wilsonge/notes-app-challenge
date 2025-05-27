@@ -40,7 +40,7 @@ const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) 
                                 id="noteTitle"
                                 value={values.title}
                                 onChange={handleChange}
-                                className="text-v1-midnight bg-v1-putty"
+                                className="block p-2.5 w-full text-v1-midnight bg-gray-50 rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                             />
                         </div>
 
@@ -51,7 +51,9 @@ const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) 
                                 id="noteContents"
                                 value={values.text}
                                 onChange={handleChange}
-                                className="text-v1-midnight bg-v1-putty resize-y w-full min-h-[80px]"
+                                placeholder="Write your thoughts here..."
+                                className="block p-2.5 w-full text-sm text-v1-midnight bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                // className=" resize-y"
                             />
                         </div>
                     </div>
