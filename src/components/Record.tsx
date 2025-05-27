@@ -160,7 +160,7 @@ const RecordComponent: FC = () => {
                             ...data,
                             'createdAt': Date.now().toString(),
                             'updatedAt': Date.now().toString(),
-                            summary,
+                            'summary': summary,
                         }
                         const { data: returnedData, errors } = await client.models.Note.create(fullNoteData);
                         if (errors) {
