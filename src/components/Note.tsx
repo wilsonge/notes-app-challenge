@@ -43,7 +43,7 @@ const NoteComponent: FC<NoteComponentProps> = (props: NoteComponentProps) => {
             <div className="background-white mb-6 flex flex-col justify-space-between align-items-stretch overflow-hidden rounded-sm shadow-sm tw-shadow-color-v1-teal">
                 <div className="p-6">
                     <Heading className="text-v1-teal mt-0 mb-2 text-xl">{props.title}</Heading>
-                    <p className="text-v1-teal mt-0">{props.text}</p>
+                    <p className="text-v1-midnight mt-0">{props.text}</p>
                 </div>
                 <div className="h-[2px] background-v1-putty" />
                 <div className="flex justify-stretch align-items-stretch h-[50px] background-v1-teal border-gray-100 border-solid border-t-[1px]">
