@@ -133,8 +133,8 @@ const RecordComponent: FC = () => {
                               size={50} style={{ margin: "auto" }} />
                     )}
                 </div>
-                <p>Click the icon to record a audio segment for the Note</p>
             </div>
+            <p className="mt-4">Click the icon to record a audio segment for the Note</p>
             <RecordingEditor
                 dialogOpen={showRecordingEditor}
                 text={recordingText}
