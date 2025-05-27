@@ -77,13 +77,6 @@
     --inset: 0.75rem;
 }
 
-/* XL screens and higher */
-@media (min-width: 80rem) {
-    .dialog {
-        width: 1000px;
-    }
-}
-
 /* Small screens and higher */
 @media (min-width: 40rem) {
     .dialog {
@@ -94,6 +87,13 @@
         width: 420px;
         border-radius: 1rem;
         padding: 1.5rem;
+    }
+}
+
+/* XL screens and higher */
+@media (min-width: 80rem) {
+    .dialog {
+        width: 1000px;
     }
 }
 
