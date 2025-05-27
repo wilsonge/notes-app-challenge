@@ -21,7 +21,7 @@ const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) 
             hasIcon={true}
             heading="Error"
         >
-            props.error
+            {props.error}
         </Alert> : ''}
         <Formik
             initialValues={{
