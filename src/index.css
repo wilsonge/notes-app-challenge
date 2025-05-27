@@ -42,10 +42,6 @@
     outline-color: var(--color-v1-teal);
 }
 
-.tab:hover {
-    background-color: rgb(0 0 0 / 7.5%);
-}
-
 .tab[aria-disabled="true"] {
     opacity: 0.5;
 }
