@@ -14,7 +14,7 @@ const schema = a.schema({
 
     summarize: a.generation({
         aiModel: a.ai.model('Claude 3 Haiku'),
-        systemPrompt: 'Provide an accurate, clear, and concise summary of the input provided'
+        systemPrompt: 'Provide an accurate, clear, and concise summary of the input provided with a length of between 2 and 3 sentences.'
     })
         .arguments({ text: a.string() })
         .returns(a.string())
