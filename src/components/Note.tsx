@@ -1,4 +1,4 @@
-import { MouseEventHandler, useState, FC } from "react";
+import { MouseEventHandler, useState, useLayoutEffect, useRef, FC, MutableRefObject } from "react";
 import { FaRegEdit, FaPlay, FaRegTrashAlt } from "react-icons/fa";
 import { Predictions } from '@aws-amplify/predictions';
 import { Icon } from '@aws-amplify/ui-react';
@@ -12,8 +12,31 @@ interface NoteComponentProps extends INoteData {
     onSaveChanges: (values: INoteEditableData) => Promise<void>;
 }
 
+const useTruncatedElement = (ref: MutableRefObject<any>) => {
+    const [isTruncated, setIsTruncated] = useState(false);
+    const [isReadingMore, setIsReadingMore] = useState(false);
+
+    useLayoutEffect(() => {
+        const { offsetHeight, scrollHeight } = ref.current || {};
+
+        if (offsetHeight && scrollHeight && offsetHeight < scrollHeight) {
+            setIsTruncated(true);
+        } else {
+            setIsTruncated(false);
+        }
+    }, [ref]);
+
+    return {
+        isTruncated,
+        isReadingMore,
+        setIsReadingMore,
+    };
+};
+
 const NoteComponent: FC<NoteComponentProps> = (props: NoteComponentProps) => {
     const [showEditor, setShowEditor] = useState(false);
+    const ref = useRef(null);
+    const { isTruncated, isReadingMore, setIsReadingMore } = useTruncatedElement(ref);
 
     const playAudio = async () => {
         const result = await Predictions.convert({
@@ -44,7 +67,14 @@ const NoteComponent: FC<NoteComponentProps> = (props: NoteComponentProps) => {
                 <div className="p-6">
                     <Heading className="text-v1-teal mt-0 mb-2 text-xl">{props.title}</Heading>
                     <p className="text-v1-midnight mt-0"><span className="font-bold">Summary:</span> {props.summary}</p>
-                    <p className="text-v1-midnight mt-0"><span className="font-bold">Note:</span> {props.text}</p>
+                    <p ref={ref} className={`break-words text-xl text-v1-midnight mt-0 ${!isReadingMore && 'line-clamp-3'}`}>
+                        <span className="font-bold">Note:</span> {props.text}
+                    </p>
+                    {isTruncated && !isReadingMore && (
+                        <button onClick={() => setIsReadingMore(true)}>
+                            Read more
+                        </button>
+                    )}
                 </div>
                 <div className="h-[2px] background-v1-putty" />
                 <div className="flex justify-stretch align-items-stretch h-[50px] background-v1-teal border-gray-100 border-solid border-t-[1px]">
