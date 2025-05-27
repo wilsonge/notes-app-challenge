@@ -26,8 +26,8 @@ const Screens: FC = () => {
                 </div>
                 <TabProvider defaultSelectedId="notes-tab">
                     <TabList className="flex gap-2" store={tab}>
-                        <Tab className="tab hover:bg-v1-teal" id="notes-tab">Notes</Tab>
-                        <Tab className="tab hover:bg-v1-teal" id="record-tab">Record</Tab>
+                        <Tab className="tab hover:bg-v1-teal hover:text-white" id="notes-tab">Notes</Tab>
+                        <Tab className="tab hover:bg-v1-teal hover:text-white" id="record-tab">Record</Tab>
                     </TabList>
                     <div className="p-2">
                         <TabPanel store={tab} tabId="notes-tab">
