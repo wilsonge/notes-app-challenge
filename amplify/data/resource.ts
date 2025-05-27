@@ -14,7 +14,7 @@ const schema = a.schema({
 
     summarize: a.generation({
         aiModel: a.ai.model('Claude 3 Sonnet'),
-        systemPrompt: 'Provide an accurate, clear, and concise summary of the input provided with a length of between 2 and 3 sentences.'
+        systemPrompt: 'Provide an accurate, clear, and concise summary of the text provided with a length of between 2 and 3 sentences. Make sure to include all relevant details in your summary and analysis.'
     })
         .arguments({ text: a.string() })
         .returns(a.string())
