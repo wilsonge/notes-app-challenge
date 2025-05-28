@@ -71,6 +71,13 @@
     background-color: oklch(87.2% .01 258.338)
 }
 
+@media (prefers-color-scheme: dark) {
+    [data-backdrop] {
+        /* Tailwind's bg-gray-800 */
+        background-color: #1e2939;
+    }
+}
+
 .dialog {
     inset: var(--inset);
     max-height: calc(100dvh - var(--inset) * 2);
