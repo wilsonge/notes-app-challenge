@@ -160,15 +160,14 @@ const RecordComponent: FC = () => {
                             .summarize({text: data.text})
 
                         if (ai_errors) {
-                            console.error("Error creating note:", ai_errors);
+                            console.error("Failed to generate a summary: ", ai_errors);
                             return;
                         }
 
                         if (!summary || !summary.summary) {
-                            console.error('Failed to find a summary');
+                            console.error('Failed to generate a summary but no errors from Bedrock');
                             return;
                         }
-                        console.log(summary.summary);
 
                         const fullNoteData = {
                             ...data,
@@ -177,10 +176,12 @@ const RecordComponent: FC = () => {
                             'summary': summary.summary,
                         }
                         const { data: returnedData, errors } = await client.models.Note.create(fullNoteData);
+
                         if (errors) {
                             console.error("Error creating note:", errors);
                             return;
                         }
+
                         console.debug(returnedData);
                         document.getElementById('notes-tab')?.click();
                     } catch (error) {

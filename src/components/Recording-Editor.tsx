@@ -62,7 +62,8 @@ const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) 
                                 value={values.text}
                                 onChange={handleChange}
                                 placeholder="Write your thoughts here..."
-                                className="block p-2.5 w-full text-sm text-v1-midnight bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                /* Set a minimum height so that we can actually see some rows otherwise autoresize makes it sub-single line */
+                                className="min-h-4 block p-2.5 w-full text-sm text-v1-midnight bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                 autoResize={true}
                             />
                         </div>
