@@ -2,7 +2,7 @@ import { Dialog, DialogDismiss, DialogHeading } from "@ariakit/react";
 import { Formik } from "formik";
 import { INoteEditableData } from "../types.ts";
 import { FC } from "react";
-import { Alert } from "@aws-amplify/ui-react";
+import { Alert, TextField, TextAreaField } from "@aws-amplify/ui-react";
 
 type RecordingEditorProps = {
     onDismiss: () => void;
@@ -42,9 +42,9 @@ const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) 
                 <form onSubmit={handleSubmit}>
                     <div className="overflow-scroll p-4 form-inputs max-h-[450px] sm:max-h-[300px]">
                         <div className="mb-4">
-                            <label className="text-v1-teal mb-1 mr-2" htmlFor="noteTitle">Title</label>
-                            <input
+                            <TextField
                                 type="text"
+                                label="Title"
                                 name="title"
                                 id="noteTitle"
                                 value={values.title}
@@ -54,15 +54,15 @@ const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) 
                         </div>
 
                         <div className="mb-4">
-                            <label className="text-v1-teal mb-1" htmlFor="noteContents">Note</label>
-                            <textarea
+                            <TextAreaField
                                 name="text"
+                                label="Note"
                                 id="noteContents"
                                 value={values.text}
                                 onChange={handleChange}
                                 placeholder="Write your thoughts here..."
                                 className="block p-2.5 w-full text-sm text-v1-midnight bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                // className=" resize-y"
+                                autoResize={true}
                             />
                         </div>
                     </div>
