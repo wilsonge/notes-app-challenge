@@ -14,7 +14,7 @@ type RecordingEditorProps = {
 }
 
 const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) => (
-    <Dialog open={props.dialogOpen} onClose={() => props.onDismiss()} className="dialog fixed z-50 m-auto flex flex-col gap-4 overflow-auto bg-white text-black p-4 h-fit">
+    <Dialog open={props.dialogOpen} onClose={() => props.onDismiss()} className="dialog fixed z-50 m-auto flex flex-col gap-4 overflow-auto bg-white dark:bg-gray-700 text-black dark:text-white p-4 h-fit">
         <DialogHeading className="text-v1-teal heading text-2xl">{props.title ? "Edit Note" : "Create Note"}</DialogHeading>
         {props.error && props.error !== '' ? <Alert
             variation='error'
@@ -50,7 +50,6 @@ const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) 
                                 id="noteTitle"
                                 value={values.title}
                                 onChange={handleChange}
-                                className="block p-2.5 w-full text-v1-midnight bg-gray-50 rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                             />
                         </div>
 
@@ -62,8 +61,6 @@ const RecordingEditor: FC<RecordingEditorProps> = (props: RecordingEditorProps) 
                                 value={values.text}
                                 onChange={handleChange}
                                 placeholder="Write your thoughts here..."
-                                /* Set a minimum height so that we can actually see some rows otherwise autoresize makes it sub-single line */
-                                className="min-h-4 block p-2.5 w-full text-sm text-v1-midnight bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                 autoResize={true}
                             />
                         </div>
