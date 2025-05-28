@@ -105,10 +105,10 @@ const RecordComponent: FC = () => {
         } catch (transcribeException: unknown) {
             console.error(transcribeException);
 
-            let userTranscribeError = 'AWS Transcribe failed to parse your audio into text'
+            let userTranscribeError = 'AWS Transcribe failed to parse your audio into text.'
 
             if (transcribeException instanceof Error) {
-                userTranscribeError += transcribeException.message
+                userTranscribeError += ` The error from the service is: ${transcribeException.message}`
             }
 
             setError(userTranscribeError)
