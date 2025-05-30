@@ -6,7 +6,6 @@ const schema = a.schema({
             id: a.id().required(),
             title: a.string().required(),
             text: a.string().required(),
-            summary: a.string().required(),
             createdAt: a.string().required(),
             updatedAt: a.string().required(),
         })

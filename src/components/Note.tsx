@@ -3,6 +3,7 @@ import { FaRegEdit, FaPlay, FaRegTrashAlt } from "react-icons/fa";
 import { Predictions } from '@aws-amplify/predictions';
 import { Icon } from '@aws-amplify/ui-react';
 import { Heading, HeadingLevel } from '@ariakit/react';
+import { client } from "../client.ts";
 
 import RecordingEditor from "./Recording-Editor";
 import { INoteEditableData, INoteData } from "../types.ts";
@@ -37,6 +38,7 @@ const NoteComponent: FC<NoteComponentProps> = (props: NoteComponentProps) => {
     const [showEditor, setShowEditor] = useState(false);
     const ref = useRef(null);
     const { isTruncated, isReadingMore, setIsReadingMore } = useTruncatedElement(ref);
+    const [summary, setSummary] = useState("");
 
     const playAudio = async () => {
         const result = await Predictions.convert({
@@ -61,20 +63,40 @@ const NoteComponent: FC<NoteComponentProps> = (props: NoteComponentProps) => {
         );
     };
 
+    const generateSummary = async() => {
+        const { data: summary, errors: ai_errors } = await client.generations
+            .summarize({text: props.text})
+
+        if (ai_errors) {
+            console.error("Error creating note:", ai_errors);
+            return;
+        }
+
+        if (!summary || !summary.summary) {
+            console.error('Failed to find a summary');
+            return;
+        }
+
+        setSummary(summary.summary);
+    }
+
     return (
         <HeadingLevel>
             <div className="background-white mb-6 flex flex-col justify-space-between align-items-stretch overflow-hidden rounded-sm shadow-sm tw-shadow-color-v1-teal">
                 <div className="p-6">
                     <Heading className="text-v1-teal mt-0 mb-2 text-xl">{props.title}</Heading>
-                    <p className="text-v1-midnight mt-0"><span className="font-bold">Summary:</span> {props.summary}</p>
+                    {summary !== "" &&  (<p className="text-v1-midnight mt-0"><span className="font-bold">Summary:</span> {summary}</p>)}
                     <p ref={ref} className={`break-words text-v1-midnight mt-0 ${!isReadingMore && 'line-clamp-3'}`}>
-                        <span className="font-bold">Note:</span> {props.text}
+                        <span className="font-bold">Contents:</span> {props.text}
                     </p>
                     {isTruncated && !isReadingMore && (
-                        <button className="text-gray-400 italic" onClick={() => setIsReadingMore(true)}>
+                        <button className="mt-4 text-blue-500 focus:outline-none" onClick={() => setIsReadingMore(true)}>
                             Read more
                         </button>
                     )}
+                    {summary == "" &&  (<button className="mt-4 text-blue-500 focus:outline-none" onClick={() => generateSummary()}>
+                        Generate AI Summary
+                    </button>)}
                 </div>
                 <div className="h-[2px] background-v1-putty" />
                 <div className="flex justify-stretch align-items-stretch h-[50px] background-v1-teal border-gray-100 border-solid border-t-[1px]">

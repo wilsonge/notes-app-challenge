@@ -3,8 +3,8 @@ interface INoteEditableData {
     text: string;
 }
 
+/** Additional type for data that must be saved but is not user editable */
 interface INoteData extends  INoteEditableData {
-    summary: string;
 }
 
 export type {

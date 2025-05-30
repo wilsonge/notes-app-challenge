@@ -30,24 +30,10 @@ const NotesComponent: FC = () => {
                     onSaveChanges={async (values: INoteEditableData) => {
                         if (values == null) {return}
 
-                        const { data: summary, errors: ai_errors } = await client.generations
-                            .summarize({text: values.text})
-
-                        if (ai_errors) {
-                            console.error("Error creating note:", ai_errors);
-                            return;
-                        }
-
-                        if (!summary || !summary.summary) {
-                            console.error('Failed to find a summary');
-                            return;
-                        }
-
                         const updatedData = {
                             ...note,
                             ...values,
                             'updatedAt': Date.now().toString(),
-                            'summary': summary.summary,
                         }
                         const { data: updatedNote, errors } =  await client.models.Note.update(updatedData);
 

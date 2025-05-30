@@ -156,24 +156,10 @@ const RecordComponent: FC = () => {
                 error={error}
                 onSave={async (data: INoteEditableData) => {
                     try {
-                        const { data: summary, errors: ai_errors } = await client.generations
-                            .summarize({text: data.text})
-
-                        if (ai_errors) {
-                            console.error("Failed to generate a summary: ", ai_errors);
-                            return;
-                        }
-
-                        if (!summary || !summary.summary) {
-                            console.error('Failed to generate a summary but no errors from Bedrock');
-                            return;
-                        }
-
                         const fullNoteData = {
                             ...data,
                             'createdAt': Date.now().toString(),
                             'updatedAt': Date.now().toString(),
-                            'summary': summary.summary,
                         }
                         const { data: returnedData, errors } = await client.models.Note.create(fullNoteData);
 
