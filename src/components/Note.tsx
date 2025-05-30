@@ -94,7 +94,7 @@ const NoteComponent: FC<NoteComponentProps> = (props: NoteComponentProps) => {
                             Read more
                         </button>
                     )}
-                    {summary == "" &&  (<button className="mt-4 text-blue-500 focus:outline-none" onClick={() => generateSummary()}>
+                    {summary == "" &&  (<button className={`${(isTruncated && !isReadingMore) ? 'ml-4 border-s-1 ': ''}mt-4 text-blue-500 focus:outline-none`} onClick={() => generateSummary()}>
                         Generate AI Summary
                     </button>)}
                 </div>
