@@ -1,4 +1,4 @@
-# Amplify TODO Application with bedrock
+# Amplify Notes Application with Bedrock
 
 This project was created for the AWS Teams 2025 challenge 
 
